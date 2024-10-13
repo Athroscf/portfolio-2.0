@@ -11,10 +11,8 @@ export const metadata: Metadata = {
 
 export default function Layout({
   children,
-  backgroundImage,
 }: Readonly<{
   children: React.ReactNode;
-  backgroundImage: string;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -23,7 +21,7 @@ export default function Layout({
           <div
             className="flex min-h-screen flex-col transition-colors duration-300 dark:bg-gray-900"
             style={{
-              backgroundImage: `url(${backgroundImage})`,
+              backgroundImage: `url("/image.png")`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundAttachment: "fixed",
