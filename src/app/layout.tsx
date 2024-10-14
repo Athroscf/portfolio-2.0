@@ -18,15 +18,7 @@ export default function Layout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          <div
-            className="flex min-h-screen flex-col transition-colors duration-300 dark:bg-gray-900"
-            style={{
-              backgroundImage: `url("/image.png")`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundAttachment: "fixed",
-            }}
-          >
+          <div className="min-h-screen bg-gray-100 text-gray-800">
             <Header />
             {children}
             <Footer />
