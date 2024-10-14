@@ -1,0 +1,55 @@
+import { Experience, Project } from "@/app/types";
+
+export const experiences: Experience[] = [
+  {
+    title: "Software Developer",
+    company: "CODE Exitos",
+    period: "2022 - 2023",
+    description: "Develop and maintain solutions that optimizes the client's products.",
+    technologies: [
+      "React",
+      "NextJS",
+      "Vue",
+      "Node.js",
+      ".Net",
+      "AWS",
+      "Azure",
+      "Docker",
+      "Postgres",
+      "Mongo",
+    ],
+  },
+  {
+    title: "IT Manager",
+    company: "Minister Business Hotel",
+    period: "2021 - 2022",
+    description:
+      "Manage a team so that it can be able to build and maintain PBX, Network, and Software solutions for the hotel and its services.",
+    technologies: ["React", "NextJS", "Gatsby", "Node.js", "AWS", "GraphQL"],
+  },
+];
+
+export const projects: Project[] = [
+  {
+    title: "Elegancia & Comfort Internal App",
+    description:
+      "Developed a custom internal web application using Next.js, Redux Toolkit, GraphQL, and AWS to streamline company operations, resulting in improved workflow efficiency and user experience.",
+    technologies: ["AWS", "Cognito", "DynamoDB", "GraphQL", "Next.js", "Redux Toolkit"],
+  },
+  {
+    title: "CODE Exitos Website",
+    description: "Develop features for company's internal use.",
+    technologies: ["Vue"],
+  },
+  {
+    title: "IBAO",
+    description: "Finish development and maintained the IBAO website and platform.",
+    technologies: [".Net", "Azure", "Postgres"],
+  },
+  {
+    title: "AFLS",
+    description:
+      "Developed features for user experience and new functionalities that solve client's requirements.",
+    technologies: [".Net", "Azure", "Postgres"],
+  },
+];
