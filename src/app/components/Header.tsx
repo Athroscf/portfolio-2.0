@@ -22,9 +22,13 @@ const Header = () => {
                 <Link href="/" className="transition-colors hover:text-primary">
                   Home
                 </Link>
+              </li>
+              <li>
                 <Link href="/experience" className="transition-colors hover:text-primary">
-                  Experience
+                  Experience & Projects
                 </Link>
+              </li>
+              <li>
                 <Link href="/skills" className="transition-colors hover:text-primary">
                   Skills
                 </Link>
