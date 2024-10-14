@@ -31,13 +31,25 @@ export const experiences: Experience[] = [
 
 export const projects: Project[] = [
   {
-    title: "E-commerce Platform",
-    description: "Built a full-featured e-commerce platform using MERN stack.",
-    technologies: ["MongoDB", "Express", "React", "Node.js"],
+    title: "Elegancia & Comfort Internal App",
+    description:
+      "Developed a custom internal web application using Next.js, Redux Toolkit, GraphQL, and AWS to streamline company operations, resulting in improved workflow efficiency and user experience.",
+    technologies: ["AWS", "Cognito", "DynamoDB", "GraphQL", "Next.js", "Redux Toolkit"],
   },
   {
-    title: "Task Management App",
-    description: "Developed a real-time task management application using React and Firebase.",
-    technologies: ["React", "Firebase", "Material-UI"],
+    title: "CODE Exitos Website",
+    description: "Develop features for company's internal use.",
+    technologies: ["Vue"],
+  },
+  {
+    title: "IBAO",
+    description: "Finish development and maintained the IBAO website and platform.",
+    technologies: [".Net", "Azure", "Postgres"],
+  },
+  {
+    title: "AFLS",
+    description:
+      "Developed features for user experience and new functionalities that solve client's requirements.",
+    technologies: [".Net", "Azure", "Postgres"],
   },
 ];
