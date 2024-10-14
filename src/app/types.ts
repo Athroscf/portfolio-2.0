@@ -11,3 +11,9 @@ export type Project = {
   description: string;
   technologies: string[];
 };
+
+export type Skill = {
+  name: string;
+  level: number;
+  color: string;
+};
