@@ -33,11 +33,11 @@ export const projects: Project[] = [
   {
     title: "E-commerce Platform",
     description: "Built a full-featured e-commerce platform using MERN stack.",
-    technologies: ["MongoDB", "Express", "React", "Node.js"]
+    technologies: ["MongoDB", "Express", "React", "Node.js"],
   },
   {
     title: "Task Management App",
     description: "Developed a real-time task management application using React and Firebase.",
-    technologies: ["React", "Firebase", "Material-UI"]
+    technologies: ["React", "Firebase", "Material-UI"],
   },
 ];
