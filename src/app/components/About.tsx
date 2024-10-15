@@ -1,8 +1,5 @@
 import { Button } from "@/components/ui/button";
-
-interface IAbout {
-  scrollTo: (id: string) => void;
-}
+import { useActiveSection } from "../context-provider";
 
 const skills = [
   "HTML",
@@ -19,7 +16,9 @@ const skills = [
   "Terminal",
 ];
 
-const About: React.FC<IAbout> = ({ scrollTo }) => {
+const About = () => {
+  const { scrollTo } = useActiveSection();
+
   return (
     <section id="about" className="bg-white py-20">
       <div className="container mx-auto px-6">
