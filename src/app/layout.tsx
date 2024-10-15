@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "./theme-provider";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { ActiveSectionProvider } from "./context-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,11 +25,13 @@ export default function Layout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.className} min-h-screen bg-gray-100 text-gray-800`}>
         <ThemeProvider>
-          <div className="min-h-screen bg-gray-100 text-gray-800">
-            <Header />
-            {children}
-            <Footer />
-          </div>
+          <ActiveSectionProvider>
+            <div className="min-h-screen bg-gray-100 text-gray-800">
+              <Header />
+              {children}
+              <Footer />
+            </div>
+          </ActiveSectionProvider>
         </ThemeProvider>
       </body>
     </html>
