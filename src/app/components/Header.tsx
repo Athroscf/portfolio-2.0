@@ -26,7 +26,7 @@ const Header = () => {
               width={10}
               height={10}
             />
-            <span className="font-bold text-xl">CHRISTOPHER FIALLOS</span>
+            <span className="text-xl font-bold">CHRISTOPHER FIALLOS</span>
           </div>
           <div className="flex items-center space-x-4">
             <ul className="hidden space-x-4 md:flex">

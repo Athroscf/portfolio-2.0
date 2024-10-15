@@ -4,7 +4,6 @@ import { experiences, projects } from "@/lib/content";
 import About from "./components/About";
 import Intro from "./components/Intro";
 import EP from "./components/EP";
-import { ActiveSectionProvider } from "./context-provider";
 
 export default function Home() {
   return (
