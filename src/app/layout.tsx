@@ -5,6 +5,7 @@ import { ThemeProvider } from "./theme-provider";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { ActiveSectionProvider } from "./context-provider";
+import ContactFloating from "./components/ContactFloating";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,6 +29,7 @@ export default function Layout({
           <ActiveSectionProvider>
             <div className="min-h-screen bg-gray-100 text-gray-800">
               <Header />
+              <ContactFloating />
               {children}
               <Footer />
             </div>
