@@ -24,10 +24,12 @@ export default function Layout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${roboto.className} min-h-screen bg-gray-100 text-gray-800`}>
+      <body
+        className={`${roboto.className} min-h-screen bg-gray-100 text-gray-800 dark:bg-gray-800 dark:bg-opacity-90`}
+      >
         <ThemeProvider>
           <ActiveSectionProvider>
-            <div className="min-h-screen bg-gray-100 text-gray-800">
+            <div className="min-h-screen bg-gray-100 text-gray-800 dark:bg-gray-800 dark:bg-opacity-90">
               <Header />
               <ContactFloating />
               {children}
