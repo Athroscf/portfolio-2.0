@@ -35,22 +35,26 @@ export const projects: Project[] = [
     description:
       "Developed a custom internal web application using Next.js, Redux Toolkit, GraphQL, and AWS to streamline company operations, resulting in improved workflow efficiency and user experience.",
     technologies: ["AWS", "Cognito", "DynamoDB", "GraphQL", "Next.js", "Redux Toolkit"],
+    image: "/eg.png",
   },
   {
     title: "CODE Exitos Website",
     description: "Develop features for company's internal use.",
     technologies: ["Vue"],
+    image: "/ibao.png",
   },
   {
     title: "IBAO",
     description: "Finish development and maintained the IBAO website and platform.",
     technologies: [".Net", "Azure", "Postgres"],
+    image: "/eg.png",
   },
   {
     title: "AFLS",
     description:
       "Developed features for user experience and new functionalities that solve client's requirements.",
     technologies: [".Net", "Azure", "Postgres"],
+    image: "/eg.png",
   },
 ];
 

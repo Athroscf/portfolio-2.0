@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Github, LinkedinIcon, TwitterIcon } from "lucide-react";
 import { useState } from "react";
 import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi";
 
