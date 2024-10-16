@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Github, LinkedinIcon, TwitterIcon } from "lucide-react";
 import { useState } from "react";
+import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi";
 
 const Footer = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -55,13 +56,13 @@ const Footer = () => {
             <h2 className="mb-4 text-2xl font-bold text-white">Connect With Me</h2>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-300 transition-colors duration-300 hover:text-white">
-                <Github size={24} />
+                <FiGithub size={24} />
               </a>
               <a href="#" className="text-gray-300 transition-colors duration-300 hover:text-white">
-                <LinkedinIcon size={24} />
+                <FiLinkedin size={24} />
               </a>
               <a href="#" className="text-gray-300 transition-colors duration-300 hover:text-white">
-                <TwitterIcon size={24} />
+                <FiTwitter size={24} />
               </a>
             </div>
             <p className="mt-4 text-sm">
