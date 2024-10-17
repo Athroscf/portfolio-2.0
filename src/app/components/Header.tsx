@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useActiveSection } from "../context-provider";
+import { useTheme } from "../theme-provider";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>();
   const { activeSection, scrollTo } = useActiveSection();
+  const { theme } = useTheme();
 
   const sections = ["home", "about", "work", "projects"];
 
@@ -30,14 +32,14 @@ const Header = () => {
           </div>
           <div className="flex items-center space-x-4">
             <ul className="hidden space-x-4 md:flex">
-              {sections.map((item, index) => (
-                <li key={`${index}-${item}`}>
-                  <Link
-                    href="/"
-                    onClick={() => scrollTo(item)}
-                    className={`capitalize ${activeSection === item ? "text-purple-600" : "text-gray-600"} hover:text-purple-600`}
-                  ></Link>
-                </li>
+              {sections.map((section, index) => (
+                <button
+                  key={`${index}-{section}`}
+                  onClick={() => scrollTo(section)}
+                  className={`capitalize ${activeSection === section ? "text-purple-600" : theme === "dark" ? "text-gray-300" : "text-gray-600"} transition-colors hover:text-purple-600`}
+                >
+                  {section}
+                </button>
               ))}
             </ul>
             <ThemeToggle />
