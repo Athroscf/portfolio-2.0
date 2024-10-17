@@ -21,13 +21,12 @@ const EP: React.FC<IEP> = ({ index, title, image, description, technologies, com
   return (
     <div key={index} className={`flex flex-col items-center gap-8 py-6 md:flex-row`}>
       {image ? (
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-1/2" style={{ position: "relative", aspectRatio: "16/9" }}>
           <Image
             src={image}
             alt={title}
             className="h-auto w-full rounded-lg object-cover shadow-md"
-            width={40}
-            height={30}
+            fill
           />
         </div>
       ) : null}
