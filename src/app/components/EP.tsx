@@ -16,6 +16,8 @@ interface IEP {
 const EP: React.FC<IEP> = ({ index, title, image, description, technologies, company, period }) => {
   const { theme } = useTheme();
 
+  // Have to compress and optimize image resolution and size
+  // search for sharp, react-optimized-image or compress-image packages.
   return (
     <div key={index} className={`flex flex-col items-center gap-8 py-6 md:flex-row`}>
       {image ? (
@@ -46,7 +48,9 @@ const EP: React.FC<IEP> = ({ index, title, image, description, technologies, com
             {tech}
           </Badge>
         ))}
-        <Button className="bg-purple-600 text-white hover:bg-purple-700">CASE STUDY</Button>
+        <div>
+          <Button className="bg-purple-600 text-white hover:bg-purple-700">CASE STUDY</Button>
+        </div>
       </div>
     </div>
   );
