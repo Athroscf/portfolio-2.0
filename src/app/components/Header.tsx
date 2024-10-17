@@ -21,13 +21,14 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <nav className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <Image
-              src="/profile.png"
-              alt="Christopher Fiallos"
-              className="h-10 w-10 rounded-full"
-              width={10}
-              height={10}
-            />
+            <div className="h-10 w-10" style={{ position: "relative", aspectRatio: "16/9" }}>
+              <Image
+                src="/profile.png"
+                alt="Christopher Fiallos"
+                className="h-10 w-10 rounded-full"
+                fill
+              />
+            </div>
             <span className="text-xl font-bold">CHRISTOPHER FIALLOS</span>
           </div>
           <div className="flex items-center space-x-4">
