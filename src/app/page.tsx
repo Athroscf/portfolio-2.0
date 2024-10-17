@@ -1,32 +1,54 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { experiences, projects } from "@/lib/content";
+import About from "./components/About";
+import Intro from "./components/Intro";
+import EP from "./components/EP";
+import { useTheme } from "./theme-provider";
 
 export default function Home() {
+  const { theme } = useTheme();
   return (
     <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center text-center text-gray-800 dark:text-white">
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-blue-900/50 to-black/50"></div>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10"
-      >
-        <h1 className="animate-fade-in-down mb-4 text-5xl font-bold text-white md:text-7xl">
-          Christopher Fiallos
-        </h1>
-        <h2 className="animate-fade-in-down mb-4 text-3xl font-bold text-white md:text-5xl">
-          Fullstack Developer
-        </h2>
-        <p className="animate-fade-in-up mb-8 max-w-2xl text-xl text-white md:text-2xl">
-          Welcome to my portfolio. I&apos;m a fullstack developer passionate about creating
-          efficient and user-friendly web applications.
-        </p>
-        <Button size="lg" className="animate-fade-in bg-blue-600 text-white hover:bg-blue-700">
-          LEARN MORE
-        </Button>
-      </motion.div>
+      <main>
+        <Intro />
+        <About />
+        <section id="work" className="py-20">
+          <div
+            className={`min-h-screen ${theme === "dark" ? "bg-gray-800 text-white dark:opacity-90" : "bg-gray-100 text-gray-800"} relative transition-colors duration-300`}
+          >
+            <h2 className="mb-8 text-center text-3xl font-bold dark:text-white">Work Experience</h2>
+            <div className="space-y-12">
+              {experiences.map((item, index) => (
+                <EP
+                  key={`${index}-${item.title}`}
+                  index={index}
+                  title={item.title}
+                  description={item.description}
+                  technologies={item.technologies}
+                  company={item.company}
+                  period={item.period}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+        <section id="projects" className="py-20">
+          <h2 className="mb-4 text-3xl font-semibold dark:text-white">Projects</h2>
+          <div className="space-y-6">
+            {projects.map((item, index) => (
+              <EP
+                key={`${index}-${item.title}`}
+                index={index}
+                title={item.title}
+                image={item.image}
+                description={item.description}
+                technologies={item.technologies}
+              />
+            ))}
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
