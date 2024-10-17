@@ -20,7 +20,7 @@ const About = () => {
   const { scrollTo } = useActiveSection();
 
   return (
-    <section id="about" className="bg-white py-20">
+    <section id="about" className="py-20">
       <div className="container mx-auto px-6">
         <h2 className="mb-8 text-center text-3xl font-bold">ABOUT ME</h2>
         <p className="mx-auto mb-12 max-w-2xl text-center">
