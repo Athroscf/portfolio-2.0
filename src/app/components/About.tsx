@@ -22,7 +22,10 @@ const About = () => {
   const { theme } = useTheme();
 
   return (
-    <section id="about" className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} transition-colors duration-300`}>
+    <section
+      id="about"
+      className={`py-20 ${theme === "dark" ? "bg-gray-900" : "bg-white"} transition-colors duration-300`}
+    >
       <div className="container mx-auto px-12">
         <h2 className="mb-8 text-center text-3xl font-bold">ABOUT ME</h2>
         <p className="mx-auto mb-12 max-w-2xl text-center">
@@ -59,7 +62,10 @@ const About = () => {
             <h3 className="mb-4 text-xl font-semibold">My Skills</h3>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
-                <span key={skill} className={`${theme === 'dark' ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-800'} px-3 py-1 rounded-full text-sm transition-colors duration-300`}>
+                <span
+                  key={skill}
+                  className={`${theme === "dark" ? "bg-gray-700 text-gray-300" : "bg-gray-200 text-gray-800"} rounded-full px-3 py-1 text-sm transition-colors duration-300`}
+                >
                   {skill}
                 </span>
               ))}
