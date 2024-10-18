@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useActiveSection } from "../context-provider";
+import { useTheme } from "../theme-provider";
 
 const skills = [
   "HTML",
@@ -18,10 +19,11 @@ const skills = [
 
 const About = () => {
   const { scrollTo } = useActiveSection();
+  const { theme } = useTheme();
 
   return (
-    <section id="about" className="py-20">
-      <div className="container mx-auto px-6">
+    <section id="about" className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} transition-colors duration-300`}>
+      <div className="container mx-auto px-12">
         <h2 className="mb-8 text-center text-3xl font-bold">ABOUT ME</h2>
         <p className="mx-auto mb-12 max-w-2xl text-center">
           Here you will find more information about me, what I do, and my current skills mostly in
@@ -50,14 +52,14 @@ const About = () => {
               className="mt-4 bg-purple-600 text-white hover:bg-purple-700"
               onClick={() => scrollTo("contact")}
             >
-              CONTACT
+              CONTACT ME
             </Button>
           </div>
           <div>
             <h3 className="mb-4 text-xl font-semibold">My Skills</h3>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
-                <span key={skill} className="rounded-full bg-gray-200 px-3 py-1 text-sm">
+                <span key={skill} className={`${theme === 'dark' ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-800'} px-3 py-1 rounded-full text-sm transition-colors duration-300`}>
                   {skill}
                 </span>
               ))}
