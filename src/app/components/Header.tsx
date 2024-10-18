@@ -52,22 +52,17 @@ const Header = () => {
           </div>
         </nav>
         {isMenuOpen && (
-          <ul className="mt-4 space-y-2 md:hidden">
-            <li>
-              <Link href="/" className="block py-2 transition-colors hover:text-primary">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/experience" className="block py-2 transition-colors hover:text-primary">
-                Experience & Projects
-              </Link>
-            </li>
-            <li>
-              <Link href="/skills" className="block py-2 transition-colors hover:text-primary">
-                Skills
-              </Link>
-            </li>
+          <ul className="mt-4 space-y-2 text-center md:hidden">
+            {sections.map((section, index) => (
+              <li key={`${index}-{section}`}>
+                <button
+                  onClick={() => scrollTo(section)}
+                  className={`capitalize ${activeSection === section ? "text-purple-600" : theme === "dark" ? "text-gray-300" : "text-gray-600"} transition-colors hover:text-purple-600`}
+                >
+                  {section}
+                </button>
+              </li>
+            ))}
           </ul>
         )}
       </div>
