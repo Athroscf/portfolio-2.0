@@ -11,8 +11,8 @@ export default function Home() {
       <main>
         <Intro />
         <About />
-        <section id="work" className="py-20">
-          <div className="container mx-auto px-6">
+        <section id="work" className="pt-10">
+          <div className="container mx-auto">
             <h2 className="mb-8 text-center text-3xl font-bold dark:text-white">Work Experience</h2>
             <div className="space-y-12">
               {experiences.map((item, index) => (

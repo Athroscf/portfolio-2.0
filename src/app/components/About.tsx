@@ -24,7 +24,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className={`py-20 ${theme === "dark" ? "bg-gray-900" : "bg-white"} transition-colors duration-300`}
+      className={`py-20 ${theme === "dark" ? "bg-gray-900" : "bg-white"} rounded-lg transition-colors duration-300`}
     >
       <div className="container mx-auto px-12">
         <h2 className="mb-8 text-center text-3xl font-bold">ABOUT ME</h2>
