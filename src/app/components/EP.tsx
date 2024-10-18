@@ -19,18 +19,16 @@ const EP: React.FC<IEP> = ({ index, title, image, description, technologies, com
   // Have to compress and optimize image resolution and size
   // search for sharp, react-optimized-image or compress-image packages.
   return (
-    <div key={index} className={`flex flex-col items-center gap-8 py-6 md:flex-row`}>
+    <div
+      key={index}
+      className={`${theme === "dark" ? "bg-gray-900" : "bg-white"} flex flex-col items-center rounded-lg py-6 transition-colors duration-300 md:flex-row`}
+    >
       {image ? (
         <div className="w-full md:w-1/2" style={{ position: "relative", aspectRatio: "16/9" }}>
-          <Image
-            src={image}
-            alt={title}
-            className="h-auto w-full rounded-lg object-cover shadow-md"
-            fill
-          />
+          <Image src={image} alt={title} className="h-auto w-full rounded-lg object-cover" fill />
         </div>
       ) : null}
-      <div className="w-full space-y-4 md:w-1/2">
+      <div className="w-full space-y-4 p-4 md:w-1/2">
         <h3 className="text-2xl font-semibold">{title}</h3>
         {company ? (
           <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
@@ -42,7 +40,7 @@ const EP: React.FC<IEP> = ({ index, title, image, description, technologies, com
           <Badge
             key={i}
             variant="secondary"
-            className="transition-all duration-300 hover:scale-110"
+            className="mr-1 transition-all duration-300 hover:scale-110"
           >
             {tech}
           </Badge>
