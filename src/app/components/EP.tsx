@@ -1,55 +1,76 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { useTheme } from "../theme-provider";
+import { Card } from "@/components/ui/card";
+import { EPCard } from "../types";
+import "../globals.css";
 
 interface IEP {
-  index: number;
   title: string;
-  image?: string;
   description: string;
-  technologies: string[];
-  company?: string;
-  period?: string;
+  cards: EPCard[];
 }
 
-const EP: React.FC<IEP> = ({ index, title, image, description, technologies, company, period }) => {
-  const { theme } = useTheme();
-
-  // Have to compress and optimize image resolution and size
-  // search for sharp, react-optimized-image or compress-image packages.
+const EP: React.FC<IEP> = ({ title, description, cards }) => {
   return (
-    <div
-      key={index}
-      className={`${theme === "dark" ? "bg-gray-900" : "bg-white"} flex flex-col items-center rounded-lg py-6 transition-colors duration-300 md:flex-row`}
-    >
-      {image ? (
-        <div className="w-full md:w-1/2" style={{ position: "relative", aspectRatio: "16/9" }}>
-          <Image src={image} alt={title} className="h-auto w-full rounded-lg object-cover" fill />
-        </div>
-      ) : null}
-      <div className="w-full space-y-4 p-4 md:w-1/2">
-        <h3 className="text-2xl font-semibold">{title}</h3>
-        {company ? (
-          <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-            {company} | {period}
-          </p>
-        ) : null}
-        <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>{description}</p>
-        {technologies.map((tech, i) => (
-          <Badge
-            key={i}
-            variant="secondary"
-            className="mr-1 transition-all duration-300 hover:scale-110"
-          >
-            {tech}
-          </Badge>
-        ))}
-        <div>
-          <Button className="bg-purple-600 text-white hover:bg-purple-700">CASE STUDY</Button>
+    <section id="projects" className="py-20">
+      <div className="container mx-auto px-6">
+        <h2 className="mb-8 text-center text-3xl font-bold">{title}</h2>
+        <p className="mx-auto mb-12 max-w-2xl text-center">{description}</p>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {cards.map((project, index) => {
+            const totalItems = cards.length;
+
+            return (
+              <div
+                key={index}
+                className={`group flex h-[300px] justify-center`}
+                style={{ perspective: "1000px" }}
+              >
+                <div
+                  className={`relative h-full w-[500px] transition-transform duration-700 ease-in-out ${
+                    totalItems === 1 // Center single item
+                      ? "justify-self-center" // Center the item
+                      : totalItems === 2 // Center both items if there are 2
+                        ? "col-span-2 justify-between"
+                        : totalItems % 3 === 1 && index === totalItems - 1 // Center the last item if total items is odd
+                          ? "col-span-3 justify-self-center" // Center the last single card in its own row
+                          : "" // No additional classes needed for 3 items
+                  }`}
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  {/* Front of the card */}
+                  <div
+                    className="absolute inset-0 h-full w-full"
+                    style={{ backfaceVisibility: "hidden" }}
+                  >
+                    <Card className="flex h-full w-full flex-col items-center justify-center p-6">
+                      <div className="mb-4 text-6xl">{project?.icon}</div>
+                      <h3 className="text-center text-2xl font-semibold">{project.title}</h3>
+                    </Card>
+                  </div>
+
+                  {/* Back of the card */}
+                  <div
+                    className="absolute inset-0 h-full w-full"
+                    style={{
+                      transform: "rotateY(180deg)",
+                      backfaceVisibility: "hidden",
+                    }}
+                  >
+                    <Card className="flex h-full w-full flex-col justify-between p-6">
+                      <h3 className="mb-4 text-2xl font-semibold">{project.title}</h3>
+                      <p className="flex-grow">{project.description}</p>
+                      <Button className="mt-4 bg-purple-600 text-white hover:bg-purple-700">
+                        View Project
+                      </Button>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
