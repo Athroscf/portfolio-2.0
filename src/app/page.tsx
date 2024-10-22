@@ -11,41 +11,16 @@ export default function Home() {
       <main>
         <Intro />
         <About />
-        <section id="work" className="pt-10">
-          <div className="container mx-auto">
-            <h2 className="mb-8 text-center text-3xl font-bold dark:text-white">Work Experience</h2>
-            <div className="space-y-12">
-              {experiences.map((item, index) => (
-                <EP
-                  key={`${index}-${item.title}`}
-                  index={index}
-                  title={item.title}
-                  description={item.description}
-                  technologies={item.technologies}
-                  company={item.company}
-                  period={item.period}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-        <section id="projects" className="py-20">
-          <div className="container mx-auto px-6">
-            <h2 className="mb-4 text-3xl font-semibold dark:text-white">Projects</h2>
-            <div className="space-y-6">
-              {projects.map((item, index) => (
-                <EP
-                  key={`${index}-${item.title}`}
-                  index={index}
-                  title={item.title}
-                  image={item.image}
-                  description={item.description}
-                  technologies={item.technologies}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+        <EP
+          title={experiences.sectionTitle}
+          description={experiences.sectionDescription}
+          cards={experiences.cards}
+        />
+        <EP
+          title={projects.sectionTitle}
+          description={projects.sectionDescription}
+          cards={projects.cards}
+        />
       </main>
     </div>
   );

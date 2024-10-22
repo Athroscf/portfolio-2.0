@@ -1,16 +1,17 @@
-export type Experience = {
+export type EPCard = {
   title: string;
-  company: string;
-  period: string;
+  company?: string;
+  period?: string;
   description: string;
+  icon?: React.ReactNode;
+  image?: string;
   technologies: string[];
 };
 
-export type Project = {
-  title: string;
-  description: string;
-  image: string;
-  technologies: string[];
+export type EPSection = {
+  sectionTitle: string;
+  sectionDescription: string;
+  cards: EPCard[];
 };
 
 export type Skill = {
