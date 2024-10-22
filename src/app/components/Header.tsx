@@ -6,7 +6,7 @@ import { MenuIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useActiveSection } from "../context-provider";
 import { useTheme } from "../theme-provider";
-import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 
 const Header = () => {
