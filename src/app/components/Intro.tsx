@@ -2,12 +2,17 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useActiveSection } from "../context-provider";
 import AnimatedDot from "@/app/components/AnimatedDot";
+import { useTheme } from "../theme-provider";
 
 const Intro = () => {
   const { scrollTo } = useActiveSection();
+  const { theme } = useTheme();
 
   return (
-    <section id="home" className="flex min-h-screen flex-col items-center justify-center">
+    <section
+      id="home"
+      className={`flex min-h-screen flex-col items-center justify-center ${theme === "dark" ? 'bg-[url("/dark-background.jpg")]' : 'bg-[url("/light-background.jpg")]'}`}
+    >
       {/* <div className="absolute inset-0 bg-gradient-to-b from-blue-900/50 to-black/50 z-0"></div> */}
       <div className="text-center">
         <motion.h1
