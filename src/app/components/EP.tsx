@@ -12,9 +12,9 @@ interface IEP {
 
 const EP: React.FC<IEP> = ({ title, description, cards }) => {
   return (
-    <section id="projects" className="py-20">
+    <section id={title} className="py-20">
       <div className="container mx-auto px-6">
-        <h2 className="mb-8 text-center text-3xl font-bold">{title}</h2>
+        <h2 className="mb-8 text-center text-3xl font-bold capitalize">{title}</h2>
         <DividerLine />
         <p className="mx-auto mb-12 max-w-2xl text-center">{description}</p>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
