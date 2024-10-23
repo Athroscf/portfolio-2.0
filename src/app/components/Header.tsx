@@ -51,7 +51,7 @@ const Header = () => {
                   </SheetTitle>
                 </SheetHeader>
                 <Separator />
-                <ul className="mt-4 space-y-2 md:hidden">
+                <ul className="mt-4 space-y-2">
                   {sections.map((section, index) => (
                     <li key={`${index}-${section}`}>
                       <button
@@ -61,7 +61,7 @@ const Header = () => {
                         }}
                         className={`capitalize ${activeSection === section ? "text-purple-600" : theme === "dark" ? "text-gray-300" : "text-gray-600"} transition-colors hover:text-purple-600`}
                       >
-                        {section} asdasd
+                        {section}
                       </button>
                     </li>
                   ))}
@@ -86,7 +86,6 @@ const Profile = () => {
           alt="Christopher Fiallos"
           className="h-10 w-10 rounded-full"
           fill
-          // sizes="10px"
         />
       </div>
       <span className="text-xl font-bold">CHRISTOPHER FIALLOS</span>
