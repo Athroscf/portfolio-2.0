@@ -61,9 +61,6 @@ const EP: React.FC<IEP> = ({ title, description, cards }) => {
                     <Card className="flex h-full w-full flex-col justify-between p-6">
                       <h3 className="mb-4 text-2xl font-semibold">{project.title}</h3>
                       <p className="flex-grow">{project.description}</p>
-                      <Button className="mt-4 bg-purple-600 text-white hover:bg-purple-700">
-                        View Project
-                      </Button>
                     </Card>
                   </div>
                 </div>

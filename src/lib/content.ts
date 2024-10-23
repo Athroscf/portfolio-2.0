@@ -48,7 +48,7 @@ export const experiences: EPSection = {
       company: "Minister Business Hotel",
       period: "2021 - 2022",
       description:
-        "Led a team to develop and implement various technology projects. Key achievements included designing and launching the hotel’s website, building and maintaining a PBX system, and creating an innovative software solution that allowed guests to access their rooms using AI technology. Additionally, contributed to the development of software for the hotel’s bar, enhancing overall guest experience and operational efficiency.",
+        "Led a team to develop and implement various technology projects. Key achievements included designing and launching the hotel’s website, building and maintaining a PBX system, and creating an innovative software solution (prototype) that allowed guests to access their rooms using AI technology. Additionally, contributed to the development of software for the hotel’s bar, enhancing overall guest experience and operational efficiency.",
       technologies: ["React", "NextJS", "Gatsby", "Node.js", "AWS", "GraphQL"],
     },
   ],
@@ -57,7 +57,7 @@ export const experiences: EPSection = {
 export const projects: EPSection = {
   sectionTitle: "projects",
   sectionDescription:
-    "Here you will find some of the personal and clients projects that I created with each project containing its own case study",
+    "Here you will find some of the personal and clients projects that I created or contributed.",
   cards: [
     {
       title: "Elegancia & Comfort Internal App",
@@ -68,28 +68,58 @@ export const projects: EPSection = {
     },
     {
       title: "CODE Exitos Website",
-      description: "Develop features for company's internal use.",
+      description:
+        "Designed and developed enhancements for the company's website, focusing on improving user experience.",
+      technologies: ["Vue"],
+      image: "/ibao.png",
+    },
+    {
+      title: "CODE Exitos Internal App",
+      description:
+        "Developed, refined, and designed features for the company's internal systems, enhancing functionality and user experience.",
       technologies: ["Vue"],
       image: "/ibao.png",
     },
     {
       title: "IBAO",
-      description: "Finish development and maintained the IBAO website and platform.",
+      description:
+        "Completed the development and ongoing maintenance of the IBAO website and platform, ensuring optimal performance and user engagement.",
       technologies: [".Net", "Azure", "Postgres"],
       image: "/eg.png",
     },
     {
       title: "AFLS",
       description:
-        "Developed features for user experience and new functionalities that solve client's requirements.",
+        "Developed features to enhance user experience and introduced new functionalities to address client requirements effectively.",
       technologies: [".Net", "Azure", "Postgres"],
       image: "/eg.png",
     },
     {
-      title: "AFLS",
+      title: "Minister Business Hotel Bar's Software",
       description:
-        "Developed features for user experience and new functionalities that solve client's requirements.",
-      technologies: [".Net", "Azure", "Postgres"],
+        "Contributed to the development of software for the hotel’s bar, improving guest experience and operational efficiency.",
+      technologies: ["Ionic Framework/React", "AWS", "Redux Toolkit"],
+      image: "/eg.png",
+    },
+    {
+      title: "Minister Business Hotel's AI-Powered Room Access Solution (Prototype)",
+      description:
+        "Developed an innovative AI-powered prototype that enables guests to access their rooms seamlessly using AI.",
+      technologies: ["NodeJS", "TensorFlow"],
+      image: "/eg.png",
+    },
+    {
+      title: "Minister Business Hotel's Website",
+      description:
+        "Designed and developed the hotel’s website, focusing on user experience and functionality.",
+      technologies: ["NextJS", "AWS", "DynamoDB", "Redux Toolkit"],
+      image: "/eg.png",
+    },
+    {
+      title: "Minister Business Hotel's PBX",
+      description:
+        "Reengineered and optimized the PBX system for improved performance and reliability.",
+      technologies: ["FreePBX"],
       image: "/eg.png",
     },
   ],
