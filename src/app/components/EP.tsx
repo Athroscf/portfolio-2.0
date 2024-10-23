@@ -65,7 +65,7 @@ const EP: React.FC<IEP> = ({ title, description, cards }) => {
 
                   {/* Back of the card */}
                   <div
-                    className="absolute inset-0 h-full w-full "
+                    className="absolute inset-0 h-full w-full"
                     style={{
                       transform: "rotateY(180deg)",
                       backfaceVisibility: "hidden",
