@@ -27,9 +27,8 @@ const Header = () => {
             <ul className="hidden space-x-4 md:flex">
               {sections.map((section, index) => (
                 <button
-                  key={`${index}-{section}`}
+                  key={`${index}-${section}`}
                   onClick={() => {
-                    setIsMenuOpen(!isMenuOpen);
                     scrollTo(section);
                   }}
                   className={`capitalize ${activeSection === section ? "text-purple-600" : theme === "dark" ? "text-gray-300" : "text-gray-600"} transition-colors hover:text-purple-600`}
@@ -40,13 +39,10 @@ const Header = () => {
             </ul>
             <ThemeToggle />
             <Sheet open={isMenuOpen}>
-              <SheetTrigger onClick={() => setIsMenuOpen(!isMenuOpen)} asChild>
+              <SheetTrigger onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 {isMenuOpen ? <XIcon /> : <MenuIcon />}
               </SheetTrigger>
-              <SheetContent
-                aria-describedby="menu"
-                onInteractOutside={() => setIsMenuOpen(!isMenuOpen)}
-              >
+              <SheetContent onInteractOutside={() => setIsMenuOpen(!isMenuOpen)}>
                 <SheetHeader className="mb-5">
                   <SheetTitle>
                     <div className="flex items-center space-x-4">
@@ -65,7 +61,7 @@ const Header = () => {
                         }}
                         className={`capitalize ${activeSection === section ? "text-purple-600" : theme === "dark" ? "text-gray-300" : "text-gray-600"} transition-colors hover:text-purple-600`}
                       >
-                        {section}
+                        {section} asdasd
                       </button>
                     </li>
                   ))}
@@ -74,23 +70,6 @@ const Header = () => {
             </Sheet>
           </div>
         </nav>
-<<<<<<< HEAD
-        {isMenuOpen && (
-          <ul className="mt-4 space-y-2 text-center md:hidden">
-            {sections.map((section, index) => (
-              <li key={`${index}-{section}`}>
-                <button
-                  onClick={() => scrollTo(section)}
-                  className={`capitalize ${activeSection === section ? "text-purple-600" : theme === "dark" ? "text-gray-300" : "text-gray-600"} transition-colors hover:text-purple-600`}
-                >
-                  {section}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-=======
->>>>>>> 9d0db3d3f22256900e14563ebd59ca8f37ee4a16
       </div>
     </header>
   );
@@ -107,7 +86,7 @@ const Profile = () => {
           alt="Christopher Fiallos"
           className="h-10 w-10 rounded-full"
           fill
-          sizes="10px"
+          // sizes="10px"
         />
       </div>
       <span className="text-xl font-bold">CHRISTOPHER FIALLOS</span>
