@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useActiveSection } from "../context-provider";
 import { useTheme } from "../theme-provider";
+import DividerLine from "./DividerLine";
 
 const skills = [
   "HTML",
@@ -28,6 +29,7 @@ const About = () => {
     >
       <div className="container mx-auto px-12">
         <h2 className="mb-8 text-center text-3xl font-bold">ABOUT ME</h2>
+        <DividerLine />
         <p className="mx-auto mb-12 max-w-2xl text-center">
           Here you will find more information about me, what I do, and my current skills mostly in
           terms of programming and technology.
