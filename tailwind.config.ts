@@ -68,6 +68,15 @@ const config: Config = {
       backfaceVisibility: {
         hidden: "hidden",
       },
+      animation: {
+        bounce: "bounce 1s infinite",
+      },
+      keyframes: {
+        bounce: {
+          "0%, 100%": { transform: "translateY(-25%)" },
+          "50%": { transform: "translateY(0)" },
+        },
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
