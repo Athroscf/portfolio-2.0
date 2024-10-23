@@ -1,15 +1,35 @@
 import { EPSection, Skill } from "@/app/types";
 
 export const experiences: EPSection = {
-  sectionTitle: "Experiences",
+  sectionTitle: "roles",
   sectionDescription:
-    "Here you will find some of the personal and clients projects that I created with each project containing its own case study",
+    "Here you will find some of my previous roles as a Software Engineer at different companies.",
   cards: [
+    {
+      title: "Fullstack Developer",
+      company: "Elegancia & Comfort",
+      period: "2024",
+      description:
+        "Developed and implemented an internal software solution for Elegancia & Comfort, enhancing the company’s employee management, inventory tracking, and sales processes. This comprehensive system streamlined operations, improved data accessibility, and facilitated better decision-making.",
+      technologies: [
+        "React",
+        "NextJS",
+        "Vue",
+        "Node.js",
+        ".Net",
+        "AWS",
+        "Azure",
+        "Docker",
+        "Postgres",
+        "Mongo",
+      ],
+    },
     {
       title: "Software Developer",
       company: "CODE Exitos",
       period: "2022 - 2023",
-      description: "Develop and maintain solutions that optimizes the client's products.",
+      description:
+        "Played a key role as a Software Developer, contributing to multiple projects across various stages of the software development lifecycle. My responsibilities included designing and organizing development processes, implementing DevOps practices, and overseeing database design and maintenance. By collaborating with diverse teams, I ensured high-quality deliverables and optimized project workflows, ultimately enhancing the company’s capability to meet client needs effectively.",
       technologies: [
         "React",
         "NextJS",
@@ -28,14 +48,14 @@ export const experiences: EPSection = {
       company: "Minister Business Hotel",
       period: "2021 - 2022",
       description:
-        "Manage a team so that it can be able to build and maintain PBX, Network, and Software solutions for the hotel and its services.",
+        "Led a team to develop and implement various technology projects. Key achievements included designing and launching the hotel’s website, building and maintaining a PBX system, and creating an innovative software solution that allowed guests to access their rooms using AI technology. Additionally, contributed to the development of software for the hotel’s bar, enhancing overall guest experience and operational efficiency.",
       technologies: ["React", "NextJS", "Gatsby", "Node.js", "AWS", "GraphQL"],
     },
   ],
 };
 
 export const projects: EPSection = {
-  sectionTitle: "Projects",
+  sectionTitle: "projects",
   sectionDescription:
     "Here you will find some of the personal and clients projects that I created with each project containing its own case study",
   cards: [
