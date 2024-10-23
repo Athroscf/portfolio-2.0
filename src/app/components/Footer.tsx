@@ -14,7 +14,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="mt-8 bg-gray-800 bg-opacity-90 text-gray-300 dark:bg-gray-900 dark:bg-opacity-90">
+    <footer
+      id="contact"
+      className="mt-8 bg-gray-800 bg-opacity-90 text-gray-300 dark:bg-gray-900 dark:bg-opacity-90"
+    >
       <div className="container mx-auto px-10 py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>

@@ -38,20 +38,17 @@ const About = () => {
           <div>
             <h3 className="mb-4 text-xl font-semibold">Get to know me!</h3>
             <p className="mb-4 text-justify">
-              I&apos;m a Frontend Focused Web Developer building and managing the Front-end of
-              Websites Websites and Web Applications that leads to the success of the overall
-              product. Check of my work in the Projects section.
+              I am a Full-Stack Web Developer specializing in building and managing the front-end
+              and back-end of websites and web applications, contributing to the overall success of
+              the product. Check out my work in the Projects section.
             </p>
             <p className="mb-4 text-justify">
-              I also like sharing content related to the stuff that I have learned over the years in
-              Web Development so it can help other people of the Dev Community. Feel free to Connect
-              or Follow me on my LinkedIn and Instagram where I post useful content related to Web
-              Development and Programming
+              Feel free to Connect with me or Follow me on my LinkedIn and X.
             </p>
             <p className="text-justify">
-              I&apos;m open to Job opportunities where I can contribute, learn and grow. If you have
-              a good opportunity that matches my skills and experience then don&apos;t hesitate to
-              contact me.
+              I am open to job opportunities where I can contribute, learn, and grow, especially in
+              roles involving full-stack development and cloud solutions. If you have an opportunity
+              that aligns with my skills and experience, please don’t hesitate to reach out!
             </p>
             <Button
               className="mt-4 bg-purple-600 text-white hover:bg-purple-700"
