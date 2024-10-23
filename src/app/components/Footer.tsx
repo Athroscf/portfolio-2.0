@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi";
+import ContactLinks from "./ContactLinks";
 
 const Footer = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -54,15 +54,7 @@ const Footer = () => {
           <div>
             <h2 className="mb-4 text-2xl font-bold text-white">Connect With Me</h2>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-300 transition-colors duration-300 hover:text-white">
-                <FiGithub size={24} />
-              </a>
-              <a href="#" className="text-gray-300 transition-colors duration-300 hover:text-white">
-                <FiLinkedin size={24} />
-              </a>
-              <a href="#" className="text-gray-300 transition-colors duration-300 hover:text-white">
-                <FiTwitter size={24} />
-              </a>
+              <ContactLinks />
             </div>
             <p className="mt-4 text-sm">
               © {new Date().getFullYear()} DevPortfolio. All rights reserved.
