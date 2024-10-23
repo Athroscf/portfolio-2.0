@@ -83,6 +83,7 @@ body {
   }
 }
 
+/* Card flip */
 .perspective {
   perspective: 1000px;
 }
@@ -97,4 +98,18 @@ body {
 
 .group:hover .relative {
   transform: rotateY(180deg); /* Rotate the card on hover */
+}
+
+/* Animated dot */
+@keyframes dotMove {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+.animate-dot {
+  animation: dotMove 1s infinite linear;
 }
