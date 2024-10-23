@@ -35,8 +35,8 @@ const Intro = () => {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="mx-auto mb-8 max-w-2xl text-xl md:text-2xl"
       >
-        A Result-Oriented Web Developer building and managing Websites and Web Applications that
-        leads to the success of the overall product
+        Results-Oriented Full-Stack Developer specializing in building and managing software
+        solutions and cloud-based applications that drive overall product success.
       </motion.p>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
