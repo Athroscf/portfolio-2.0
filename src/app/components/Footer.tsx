@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { FaXTwitter } from "react-icons/fa6";
-import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi";
 import ContactLinks from "./ContactLinks";
 
 const Footer = () => {
