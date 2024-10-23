@@ -11,6 +11,7 @@ export const experiences: EPSection = {
       period: "2024",
       description:
         "Developed and implemented an internal software solution for Elegancia & Comfort, enhancing the company’s employee management, inventory tracking, and sales processes. This comprehensive system streamlined operations, improved data accessibility, and facilitated better decision-making.",
+      image: "/eg.jpg",
       technologies: [
         "React",
         "NextJS",
@@ -28,8 +29,9 @@ export const experiences: EPSection = {
       title: "Software Developer",
       company: "CODE Exitos",
       period: "2022 - 2023",
+      image: "/cex.webp",
       description:
-        "Played a key role as a Software Developer, contributing to multiple projects across various stages of the software development lifecycle. My responsibilities included designing and organizing development processes, implementing DevOps practices, and overseeing database design and maintenance. By collaborating with diverse teams, I ensured high-quality deliverables and optimized project workflows, ultimately enhancing the company’s capability to meet client needs effectively.",
+        "Contributed to projects throughout the software development lifecycle, focusing on design, DevOps, and database management. Collaborated with teams to ensure high-quality deliverables and optimized workflows.",
       technologies: [
         "React",
         "NextJS",
@@ -47,8 +49,9 @@ export const experiences: EPSection = {
       title: "IT Manager",
       company: "Minister Business Hotel",
       period: "2021 - 2022",
+      image: "/mbh.png",
       description:
-        "Led a team to develop and implement various technology projects. Key achievements included designing and launching the hotel’s website, building and maintaining a PBX system, and creating an innovative software solution (prototype) that allowed guests to access their rooms using AI technology. Additionally, contributed to the development of software for the hotel’s bar, enhancing overall guest experience and operational efficiency.",
+        "Led a team in technology projects, including the hotel’s website design and launch, PBX system management, and an AI-driven room access prototype. Contributed to software development for the hotel’s bar, enhancing guest experience and operational efficiency.",
       technologies: ["React", "NextJS", "Gatsby", "Node.js", "AWS", "GraphQL"],
     },
   ],
@@ -64,63 +67,63 @@ export const projects: EPSection = {
       description:
         "Developed a custom internal web application using Next.js, Redux Toolkit, GraphQL, and AWS to streamline company operations, resulting in improved workflow efficiency and user experience.",
       technologies: ["AWS", "Cognito", "DynamoDB", "GraphQL", "Next.js", "Redux Toolkit"],
-      image: "/eg.png",
+      image: "/eg.jpg",
     },
     {
       title: "CODE Exitos Website",
       description:
         "Designed and developed enhancements for the company's website, focusing on improving user experience.",
       technologies: ["Vue"],
-      image: "/ibao.png",
+      image: "/cex.webp",
     },
     {
       title: "CODE Exitos Internal App",
       description:
         "Developed, refined, and designed features for the company's internal systems, enhancing functionality and user experience.",
       technologies: ["Vue"],
-      image: "/ibao.png",
+      image: "/cex.webp",
     },
     {
       title: "IBAO",
       description:
         "Completed the development and ongoing maintenance of the IBAO website and platform, ensuring optimal performance and user engagement.",
       technologies: [".Net", "Azure", "Postgres"],
-      image: "/eg.png",
+      image: "/ibao.png",
     },
     {
       title: "AFLS",
       description:
         "Developed features to enhance user experience and introduced new functionalities to address client requirements effectively.",
       technologies: [".Net", "Azure", "Postgres"],
-      image: "/eg.png",
+      image: "/afls.png",
     },
     {
       title: "Minister Business Hotel Bar's Software",
       description:
         "Contributed to the development of software for the hotel’s bar, improving guest experience and operational efficiency.",
       technologies: ["Ionic Framework/React", "AWS", "Redux Toolkit"],
-      image: "/eg.png",
+      image: "/mbh.png",
     },
     {
       title: "Minister Business Hotel's AI-Powered Room Access Solution (Prototype)",
       description:
         "Developed an innovative AI-powered prototype that enables guests to access their rooms seamlessly using AI.",
       technologies: ["NodeJS", "TensorFlow"],
-      image: "/eg.png",
+      image: "/mbh.png",
     },
     {
       title: "Minister Business Hotel's Website",
       description:
         "Designed and developed the hotel’s website, focusing on user experience and functionality.",
       technologies: ["NextJS", "AWS", "DynamoDB", "Redux Toolkit"],
-      image: "/eg.png",
+      image: "/mbh.png",
     },
     {
       title: "Minister Business Hotel's PBX",
       description:
         "Reengineered and optimized the PBX system for improved performance and reliability.",
       technologies: ["FreePBX"],
-      image: "/eg.png",
+      image: "/mbh.png",
     },
   ],
 };

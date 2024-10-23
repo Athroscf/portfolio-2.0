@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { EPCard } from "../types";
 import "../globals.css";
@@ -43,8 +44,21 @@ const EP: React.FC<IEP> = ({ title, description, cards }) => {
                     className="absolute inset-0 h-full w-full"
                     style={{ backfaceVisibility: "hidden" }}
                   >
-                    <Card className="flex h-full w-full flex-col items-center justify-center p-6">
-                      <div className="mb-4 text-6xl">{project?.icon}</div>
+                    <Card className="flex h-full w-full flex-col items-center justify-center p-6 dark:bg-slate-900">
+                      {project.image ? (
+                        <div
+                          className="h-10 w-16 rounded dark:bg-gray-100"
+                          style={{ aspectRatio: "16/9", position: "relative" }}
+                        >
+                          <Image
+                            src={project.image}
+                            className="mb-4 text-6xl"
+                            alt={project.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </div>
+                      ) : null}
                       <h3 className="text-center text-2xl font-semibold">{project.title}</h3>
                     </Card>
                   </div>
@@ -57,7 +71,7 @@ const EP: React.FC<IEP> = ({ title, description, cards }) => {
                       backfaceVisibility: "hidden",
                     }}
                   >
-                    <Card className="flex h-full w-full flex-col justify-between p-6">
+                    <Card className="flex h-full w-full flex-col justify-between p-6 dark:bg-slate-900">
                       <h3 className="mb-4 text-2xl font-semibold">{project.title}</h3>
                       <p className="flex-grow">{project.description}</p>
                     </Card>
