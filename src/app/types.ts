@@ -3,7 +3,6 @@ export type EPCard = {
   company?: string;
   period?: string;
   description: string;
-  icon?: React.ReactNode;
   image?: string;
   technologies: string[];
 };
