@@ -39,7 +39,10 @@ const Header = () => {
             </ul>
             <ThemeToggle />
             <Sheet open={isMenuOpen}>
-              <SheetTrigger onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              <SheetTrigger
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="md:hidden lg:hidden"
+              >
                 {isMenuOpen ? <XIcon /> : <MenuIcon />}
               </SheetTrigger>
               <SheetContent onInteractOutside={() => setIsMenuOpen(!isMenuOpen)}>
