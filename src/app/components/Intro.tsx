@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useActiveSection } from "../context-provider";
+import AnimatedDot from "@/app/components/AnimatedDot";
 
 const Intro = () => {
   const { scrollTo } = useActiveSection();
@@ -41,6 +42,7 @@ const Intro = () => {
           SEE MORE
         </Button>
       </motion.div>
+      <AnimatedDot />
     </section>
   );
 };

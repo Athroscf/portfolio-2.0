@@ -82,3 +82,34 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Card flip */
+.perspective {
+  perspective: 1000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.group:hover .relative {
+  transform: rotateY(180deg); /* Rotate the card on hover */
+}
+
+/* Animated dot */
+@keyframes dotMove {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+.animate-dot {
+  animation: dotMove 1s infinite linear;
+}

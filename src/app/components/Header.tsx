@@ -1,13 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "../theme-toggle";
-import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useActiveSection } from "../context-provider";
 import { useTheme } from "../theme-provider";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>();
@@ -21,22 +21,17 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <nav className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="h-10 w-10" style={{ position: "relative", aspectRatio: "16/9" }}>
-              <Image
-                src="/profile.png"
-                alt="Christopher Fiallos"
-                className="h-10 w-10 rounded-full"
-                fill
-              />
-            </div>
-            <span className="text-xl font-bold">CHRISTOPHER FIALLOS</span>
+            <Profile />
           </div>
           <div className="flex items-center space-x-4">
             <ul className="hidden space-x-4 md:flex">
               {sections.map((section, index) => (
                 <button
                   key={`${index}-{section}`}
-                  onClick={() => scrollTo(section)}
+                  onClick={() => {
+                    setIsMenuOpen(!isMenuOpen);
+                    scrollTo(section);
+                  }}
                   className={`capitalize ${activeSection === section ? "text-purple-600" : theme === "dark" ? "text-gray-300" : "text-gray-600"} transition-colors hover:text-purple-600`}
                 >
                   {section}
@@ -44,13 +39,42 @@ const Header = () => {
               ))}
             </ul>
             <ThemeToggle />
-            <div className="md:hidden">
-              <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <Sheet open={isMenuOpen}>
+              <SheetTrigger onClick={() => setIsMenuOpen(!isMenuOpen)} asChild>
                 {isMenuOpen ? <XIcon /> : <MenuIcon />}
-              </Button>
-            </div>
+              </SheetTrigger>
+              <SheetContent
+                aria-describedby="menu"
+                onInteractOutside={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                <SheetHeader className="mb-5">
+                  <SheetTitle>
+                    <div className="flex items-center space-x-4">
+                      <Profile />
+                    </div>
+                  </SheetTitle>
+                </SheetHeader>
+                <Separator />
+                <ul className="mt-4 space-y-2 md:hidden">
+                  {sections.map((section, index) => (
+                    <li key={`${index}-${section}`}>
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(!isMenuOpen);
+                          scrollTo(section);
+                        }}
+                        className={`capitalize ${activeSection === section ? "text-purple-600" : theme === "dark" ? "text-gray-300" : "text-gray-600"} transition-colors hover:text-purple-600`}
+                      >
+                        {section}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </SheetContent>
+            </Sheet>
           </div>
         </nav>
+<<<<<<< HEAD
         {isMenuOpen && (
           <ul className="mt-4 space-y-2 text-center md:hidden">
             {sections.map((section, index) => (
@@ -65,9 +89,28 @@ const Header = () => {
             ))}
           </ul>
         )}
+=======
+>>>>>>> 9d0db3d3f22256900e14563ebd59ca8f37ee4a16
       </div>
     </header>
   );
 };
 
 export default Header;
+
+const Profile = () => {
+  return (
+    <>
+      <div className="h-10 w-10" style={{ position: "relative", aspectRatio: "16/9" }}>
+        <Image
+          src="/profile.png"
+          alt="Christopher Fiallos"
+          className="h-10 w-10 rounded-full"
+          fill
+          sizes="10px"
+        />
+      </div>
+      <span className="text-xl font-bold">CHRISTOPHER FIALLOS</span>
+    </>
+  );
+};
