@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useActiveSection } from "../context-provider";
-import AnimatedDot from "@/app/components/AnimatedDot";
 import { useTheme } from "../theme-provider";
+import BouncingArrow from "@/app/components/BouncingArrow";
 
 const Intro = () => {
   const { scrollTo } = useActiveSection();
@@ -52,7 +52,7 @@ const Intro = () => {
           SEE MORE
         </Button>
       </motion.div>
-      <AnimatedDot />
+      <BouncingArrow />
     </section>
   );
 };
