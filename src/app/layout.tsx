@@ -8,7 +8,45 @@ import { ActiveSectionProvider } from "./context-provider";
 import ContactFloating from "./components/ContactFloating";
 
 export const metadata: Metadata = {
-  title: "Christopher Fiallos Porftolio",
+  title: "Christopher Fiallos - Full Stack Developer Portfolio",
+  description:
+    "Christopher Fiallos is a Results-Oriented Full-Stack Developer specializing in building and managing software solutions and cloud-based applications that drive overall product success.",
+  keywords: ["fullstack developer", "portfolio", "React", "Next.js", "AWS", "Christopher Fiallos"],
+  authors: [{ name: "Christopher Fiallos" }],
+  openGraph: {
+    title: "Christopher Fiallos - Full Stack Developer Portfolio",
+    description:
+      "Christopher Fiallos is a Results-Oriented Full-Stack Developer specializing in building and managing software solutions and cloud-based applications that drive overall product success.",
+    url: "https://www.christopher-fiallos.com",
+    siteName: "Christopher Fiallos Portfolio",
+    images: [
+      {
+        url: "/profile.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Christopher Fiallos - Full Stack Developer Portfolio",
+    description:
+      "Christopher Fiallos is a Results-Oriented Full-Stack Developer specializing in building and managing software solutions and cloud-based applications that drive overall product success.",
+    images: [],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 const roboto = Roboto({
