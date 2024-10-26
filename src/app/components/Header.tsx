@@ -85,7 +85,7 @@ const Profile = () => {
     <>
       <div className="h-10 w-10" style={{ position: "relative", aspectRatio: "16/9" }}>
         <Image
-          src="/profile.png"
+          src="/imgs/profile.png"
           alt="Christopher Fiallos"
           className="h-10 w-10 rounded-full"
           fill
