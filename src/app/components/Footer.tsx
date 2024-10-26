@@ -143,7 +143,7 @@ const Footer = () => {
               <ContactLinks />
             </div>
             <p className="mt-4 text-sm">
-              © {new Date().getFullYear()} DevPortfolio. All rights reserved.
+              © {new Date().getFullYear()} Christopher Fiallos. All rights reserved.
             </p>
           </div>
         </div>
