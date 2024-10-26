@@ -13,7 +13,7 @@ const Intro = () => {
       <div
         className="absolute inset-0 z-0"
         style={{
-          backgroundImage: `url(${theme === "dark" ? "/dark-background.jpg" : "/light-background.jpg"})`,
+          backgroundImage: `url(${theme === "dark" ? "/imgs/dark-background.jpg" : "/imgs/light-background.jpg"})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
