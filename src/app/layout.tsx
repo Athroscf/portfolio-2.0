@@ -61,6 +61,9 @@ export default function Layout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="canonical" href="https://christopher-fiallos.com" />
+      </head>
       <body
         className={`${roboto.className} min-h-screen bg-gray-100 text-gray-800 dark:bg-gray-800 dark:bg-opacity-90`}
       >
