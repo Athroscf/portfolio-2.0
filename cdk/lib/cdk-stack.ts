@@ -181,7 +181,9 @@ export class PorfolioStack extends cdk.Stack {
       actionName: "Github_Source",
       owner: githubOwner,
       repo: githubRepo,
-      oauthToken: cdk.SecretValue.secretsManager("github-oauth-token"),
+      oauthToken: cdk.SecretValue.secretsManager("github-oauth-token-2", {
+        jsonField: "GITHUB_OAUTH_TOKEN",
+      }),
       output: sourceOutput,
       branch: "master",
     });
