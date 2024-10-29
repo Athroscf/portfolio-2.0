@@ -1,0 +1,14 @@
+{
+  "availability-zones:account=177903940130:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f"
+  ],
+  "hosted-zone:account=177903940130:domainName=christopher-fiallos.com:region=us-east-1": {
+    "Id": "/hostedzone/Z02916781UBOD0CQ9FCO9",
+    "Name": "christopher-fiallos.com."
+  }
+}
