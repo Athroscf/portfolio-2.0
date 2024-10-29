@@ -10,10 +10,9 @@ import * as ecsPatterns from "aws-cdk-lib/aws-ecs-patterns";
 import * as route53 from "aws-cdk-lib/aws-route53";
 import * as targets from "aws-cdk-lib/aws-route53-targets";
 import { Construct } from "constructs";
-import { version } from "os";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
-export class CdkStack extends cdk.Stack {
+export class PorfolioStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -64,9 +63,20 @@ export class CdkStack extends cdk.Stack {
     });
 
     // Look for hosted zone
-    const zone = route53.HostedZone.fromLookup(this, "Zone", {
-      domainName,
-    });
+    let zone: route53.IHostedZone;
+
+    try {
+      zone = route53.HostedZone.fromLookup(this, "Zone", {
+        domainName,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error("Failed to lookup hosted zone. Make sure it exists in your account.");
+      zone = route53.HostedZone.fromHostedZoneAttributes(this, "FallbackZone", {
+        zoneName: domainName,
+        hostedZoneId: "dummy-id", // This will fail if actually used
+      });
+    }
 
     // Create certificate
     const certificate = new acm.Certificate(this, "SiteCertificate", {
@@ -129,30 +139,32 @@ export class CdkStack extends cdk.Stack {
             commands: [
               "echo Logging in to Amazon ECR...",
               "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI",
+              "COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)",
+              "IMAGE_TAG=${COMMIT_HASH:=latest}",
             ],
           },
           build: {
             commands: [
               "echo Build started on `date`",
               "echo Building the Docker image...",
-              "docker build -t $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .",
-              "docker tag $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION $REPOSITORY_URI:latest",
+              "docker build -t $REPOSITORY_URI:latest .",
+              "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG",
             ],
           },
           post_build: {
             commands: [
               "echo Build completed on `date`",
               "echo Pushing the Docker image...",
-              "docker push $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION",
-              "docker push $RESPOSITORY_URI:latest",
+              "docker push $REPOSITORY_URI:latest",
+              "docker push $REPOSITORY_URI:$IMAGE_TAG",
               "echo Writing image definitions file...",
-              'printf \'[{"name":"PortfolioContainer","imageUri":"%s"}]\' $REPOSITORY_URI:latest > imagedefinitions.json',
+              'printf \'[{"name":"PortfolioContainer","imageUri":"%s"}]\' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json',
             ],
           },
         },
         artifacts: {
           files: ["imagedefinitions.json"],
-        }
+        },
       }),
     });
 
