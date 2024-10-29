@@ -22,7 +22,7 @@ export class PorfolioStack extends cdk.Stack {
 
     // Github repo details
     const githubOwner = "Athroscf";
-    const githubRepo = "portfolio2.0";
+    const githubRepo = "portfolio-2.0";
     const githubBranch = "master";
 
     // VPC creation
