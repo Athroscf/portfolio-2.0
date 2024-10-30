@@ -1,163 +1,144 @@
 import * as cdk from "aws-cdk-lib";
+import * as acm from "aws-cdk-lib/aws-certificatemanager";
+import * as cb from "aws-cdk-lib/aws-codebuild";
+import * as cp from "aws-cdk-lib/aws-codepipeline";
+import * as cpa from "aws-cdk-lib/aws-codepipeline-actions";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ecr from "aws-cdk-lib/aws-ecr";
 import * as elbv2 from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as iam from "aws-cdk-lib/aws-iam";
 import * as route53 from "aws-cdk-lib/aws-route53";
-import * as targets from "aws-cdk-lib/aws-route53-targets";
-import * as acm from "aws-cdk-lib/aws-certificatemanager";
-import * as codebuild from "aws-cdk-lib/aws-codebuild";
-import * as codepipeline from "aws-cdk-lib/aws-codepipeline";
-import * as codepipeline_actions from "aws-cdk-lib/aws-codepipeline-actions";
+import * as r53t from "aws-cdk-lib/aws-route53-targets";
+import * as sm from "aws-cdk-lib/aws-secretsmanager";
 import { Construct } from "constructs";
 
+interface PortfolioStackProps extends cdk.StackProps {
+  domainName: string;
+  githubOwner: string;
+  githubRepo: string;
+}
+
 export class PorfolioStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+  constructor(scope: Construct, id: string, props: PortfolioStackProps) {
+    super(scope, id);
 
-    //Domain Name
-    const domainName = "christopher-fiallos.com";
-
-    // Github repo details
-    const githubOwner = "Athroscf";
-    const githubRepo = "portfolio-2.0";
-
-    // Create a VPC with minimal AZs to reduce NAT Gateway costs
-    const vpc = new ec2.Vpc(this, "PortfolioVPC", {
+    // VPC
+    const vpc = new ec2.Vpc(this, "PortfolioVpc", {
       maxAzs: 2,
       natGateways: 1,
     });
 
-    // Create an ECR repository
-    const repository = new ecr.Repository(this, "PortfolioRepo", {
-      repositoryName: "portfolio-repo",
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      lifecycleRules: [
-        {
-          maxImageCount: 3,
-          description: "Only keep 3 images to reduce storage costs",
-        },
-      ],
-    });
-
-    // Create an ECS cluster
+    // ECS Cluster
     const cluster = new ecs.Cluster(this, "PortfolioCluster", { vpc });
 
-    // Create a Fargate task definition
+    // ECR Repository
+    const repository = new ecr.Repository(this, "PortfolioRepository", {
+      repositoryName: "portfolio-repo",
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    // Task definition
     const taskDefinition = new ecs.FargateTaskDefinition(this, "PortfolioTaskDef", {
       memoryLimitMiB: 512,
       cpu: 256,
     });
 
-    // Add container to task definition
     const container = taskDefinition.addContainer("PortfolioContainer", {
-      image: ecs.ContainerImage.fromEcrRepository(repository, "latest"),
+      image: ecs.ContainerImage.fromEcrRepository(repository),
       portMappings: [{ containerPort: 3000 }],
-      logging: ecs.LogDrivers.awsLogs({ streamPrefix: "PortfolioContainer" }),
-      healthCheck: {
-        command: ["CMD-SHELL", "curl -f http://localhost:3000/ || exit 1"],
-        interval: cdk.Duration.seconds(30),
-        timeout: cdk.Duration.seconds(5),
-        retries: 3,
-        startPeriod: cdk.Duration.seconds(60),
-      },
+      logging: ecs.LogDrivers.awsLogs({ streamPrefix: "portfolio" }),
     });
 
-    // Create a Fargate service
-    const service = new ecs.FargateService(this, "PortfolioService", {
+    // Fargate Service
+    const fargateService = new ecs.FargateService(this, "PortfolioService", {
       cluster,
       taskDefinition,
-      desiredCount: 1, // Start with 1 instance to reduce costs
-      assignPublicIp: false, // Use private subnets for better security
+      desiredCount: 1,
+      assignPublicIp: true,
+      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
     });
 
-    // Create an Application Load Balancer
+    // Load Balancer
     const lb = new elbv2.ApplicationLoadBalancer(this, "PortfolioLB", {
       vpc,
       internetFacing: true,
     });
 
-    // Create a hosted zone for the domain
-    const zone = route53.HostedZone.fromLookup(this, "HostedZone", {
-      domainName,
+    const listener = lb.addListener("PortfolioListener", { port: 80 });
+
+    listener.addTargets("PortfolioTarget", {
+      port: 3000,
+      targets: [fargateService],
+      healthCheck: {
+        path: "/",
+        healthyHttpCodes: "200",
+      },
     });
 
-    // Create a certificate for HTTPS
-    const certificate = new acm.DnsValidatedCertificate(this, "PortfolioCertificate", {
-      domainName,
-      hostedZone: zone,
-      region: "us-east-1", // Certificates for CloudFront must be in us-east-1
+    // Route53 and ACM
+    const zone = route53.HostedZone.fromLookup(this, "Zone", {
+      domainName: props.domainName,
     });
 
-    // Add HTTPS listener to the load balancer
-    const httpsListener = lb.addListener("HttpsListener", {
+    const certificate = new acm.Certificate(this, "PortfolioCert", {
+      domainName: props.domainName,
+      validation: acm.CertificateValidation.fromDns(zone),
+    });
+
+    const httpsListener = lb.addListener("HttpListener", {
       port: 443,
       certificates: [certificate],
     });
 
-    /// Add the Fargate service as a target for the load balancer
-    httpsListener.addTargets("PortfolioTarget", {
-      port: 80,
-      targets: [service],
-      healthCheck: {
-        path: "/",
-        interval: cdk.Duration.seconds(60),
-        timeout: cdk.Duration.seconds(5),
-      },
+    httpsListener.addTargets("HttpsTarget", {
+      port: 3000,
+      targets: [fargateService],
     });
 
-    // Redirect HTTP to HTTPS
-    lb.addListener("HttpListener", {
-      port: 80,
-      defaultAction: elbv2.ListenerAction.redirect({
-        port: "443",
-        protocol: elbv2.ApplicationProtocol.HTTPS,
-      }),
-    });
-
-    // Create Route 53 alias record for the load balancer
     new route53.ARecord(this, "PortfolioAliasRecord", {
-      recordName: domainName,
-      target: route53.RecordTarget.fromAlias(new targets.LoadBalancerTarget(lb)),
       zone,
+      target: route53.RecordTarget.fromAlias(new r53t.LoadBalancerTarget(lb)),
+      recordName: props.domainName,
     });
 
-    // Create a CodeBuild project
-    const buildProject = new codebuild.PipelineProject(this, "PortfolioBuild", {
+    // Github secret
+    const githubSecret = sm.Secret.fromSecretNameV2(this, "GithubSecret", "github-oauth-3");
+
+    // CodeBuild project
+    const buildProject = new cb.PipelineProject(this, "PortfolioBuildProject", {
       environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
+        buildImage: cb.LinuxBuildImage.STANDARD_7_0,
         privileged: true,
       },
       environmentVariables: {
         REPOSITORY_URI: { value: repository.repositoryUri },
       },
-      buildSpec: codebuild.BuildSpec.fromObject({
+      buildSpec: cb.BuildSpec.fromObject({
         version: "0.2",
         phases: {
           pre_build: {
             commands: [
-              "echo Logging in to Amazon ECR...",
-              "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI",
-              "COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)",
-              "IMAGE_TAG=${COMMIT_HASH:=latest}",
+              "echo Loggin in to Amazon ECR...",
+              "aws ecr get-loggin-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI",
             ],
           },
           build: {
             commands: [
               "echo Build started on `date`",
               "echo Building the Docker image...",
-              "docker build -t $REPOSITORY_URI:latest .",
-              "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG",
+              "docker build -t $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .",
+              "docker tag $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION $REPOSITORY_URI:latest",
             ],
           },
           post_build: {
             commands: [
               "echo Build completed on `date`",
-              "echo Pushing the Docker image...",
+              "echo Pushing Docker image...",
+              "docker push $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION",
               "docker push $REPOSITORY_URI:latest",
-              "docker push $REPOSITORY_URI:$IMAGE_TAG",
               "echo Writing image definitions file...",
-              'printf \'[{"name":"PortfolioContainer","imageUri":"%s"}]\' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json',
+              'printf \'[{"name":"PortfolioContainer","imageUri":"%s"}]\' $REPOSITORY_URI:latest > imagedefinitions.json',
             ],
           },
         },
@@ -167,25 +148,23 @@ export class PorfolioStack extends cdk.Stack {
       }),
     });
 
-    // Grant CodeBuild project permission to push to ECR
-    repository.grantPullPush(buildProject.grantPrincipal);
+    repository.grantPullPush(buildProject.role!);
 
-    // Create a CodePipeline
-    const pipeline = new codepipeline.Pipeline(this, "PortfolioPipeline", {
-      pipelineName: "portfolio-pipeline",
+    // CodePipeline
+    const pipeline = new cp.Pipeline(this, "PortfolioPipeline", {
+      pipelineName: "PortfolioPipeline",
     });
 
-    // Add source stage
-    const sourceOutput = new codepipeline.Artifact();
-    const sourceAction = new codepipeline_actions.GitHubSourceAction({
+    // Source Stage
+    const sourceOutput = new cp.Artifact();
+    const sourceAction = new cpa.GitHubSourceAction({
       actionName: "Github_Source",
-      owner: githubOwner,
-      repo: githubRepo,
-      oauthToken: cdk.SecretValue.secretsManager("github-oauth-token-2", {
-        jsonField: "GITHUB_OAUTH_TOKEN",
-      }),
+      owner: props.githubOwner,
+      repo: props.githubRepo,
+      oauthToken: githubSecret.secretValue,
       output: sourceOutput,
       branch: "master",
+      trigger: cpa.GitHubTrigger.WEBHOOK,
     });
 
     pipeline.addStage({
@@ -193,9 +172,9 @@ export class PorfolioStack extends cdk.Stack {
       actions: [sourceAction],
     });
 
-    // Add build stage
-    const buildOutput = new codepipeline.Artifact();
-    const buildAction = new codepipeline_actions.CodeBuildAction({
+    // Build Stage
+    const buildOutput = new cp.Artifact();
+    const buildAction = new cpa.CodeBuildAction({
       actionName: "CodeBuild",
       project: buildProject,
       input: sourceOutput,
@@ -207,11 +186,11 @@ export class PorfolioStack extends cdk.Stack {
       actions: [buildAction],
     });
 
-    // Add deploy stage
-    const deployAction = new codepipeline_actions.EcsDeployAction({
-      actionName: "DeployToECS",
-      service,
-      imageFile: buildOutput.atPath("imagedefinitions.json"),
+    // Deploy Stage
+    const deployAction = new cpa.EcsDeployAction({
+      actionName: "Deploy",
+      service: fargateService,
+      input: buildOutput,
     });
 
     pipeline.addStage({
@@ -219,9 +198,25 @@ export class PorfolioStack extends cdk.Stack {
       actions: [deployAction],
     });
 
-    // Output the load balancer DNS name
-    new cdk.CfnOutput(this, "LoadBalancerDNS", {
-      value: lb.loadBalancerDnsName,
-    });
+    // Permissions
+    buildProject.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: [
+          "ecs:DescribeCluster",
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadForLayer",
+        ],
+        resources: ["*"],
+      }),
+    );
+
+    // Output
+    new cdk.CfnOutput(this, "LoadBalancerDNS", { value: lb.loadBalancerDnsName });
   }
+}
+
+export default function Component(props: { initialTime?: number } = { initialTime: 0 }) {
+  return null;
 }

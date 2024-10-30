@@ -1,21 +1,18 @@
   # Base Image
-  FROM node:18-alpine
-
-  # Set working directory
+  FROM node:18-alpine as builder
   WORKDIR /app
-
-  # Install app dependencies
   COPY package*.json ./
-  RUN npm install
-
-  # Copy app files
+  RUN npm ci
   COPY . .
-
-  # Build app
   RUN npm run build
-
-  # Expose port
+  
+  FROM node:18-alpine
+  WORKDIR /app
+  COPY --from=builder /app/next.config.js ./
+  COPY --from=builder /app/public ./public
+  COPY --from=builder /app/.next ./.next
+  COPY --from=builder /app/node_modules ./node_modules
+  COPY --from=builder /app/package.json ./package.json
+  
   EXPOSE 3000
-
-  # Start app
-  CMD ["npm", "run", "start"]
+  CMD ["npm", "start"]
