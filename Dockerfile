@@ -2,6 +2,8 @@
 FROM node:18-alpine as builder
 WORKDIR /app
 
+RUN npm install -g npm@latest
+
 # Install dependencies
 COPY package*.json ./
 RUN npm install
