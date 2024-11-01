@@ -35,7 +35,7 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 # Copy the RESEND_API_KEY from the builder stage
-COPY --from=builder /app/.env.local ./.env.local
+# COPY --from=builder /app/.env.local ./.env.local
 
 # Expose port
 EXPOSE 3000
