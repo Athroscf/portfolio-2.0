@@ -4,18 +4,23 @@ import { useTheme } from "../theme-provider";
 import DividerLine from "./DividerLine";
 
 const skills = [
-  "HTML",
-  "CSS",
-  "JavaScript",
   "React",
-  "Wordpress",
-  "PHP",
-  "SASS",
+  "NextJS",
+  "NodeJS",
+  "Typescript",
+  "Redux/Redux Toolkit",
+  "GraphQL",
+  "REST API",
+  "Apollo",
+  "NestJS",
+  "Cypress",
   "GIT",
-  "Github",
-  "Responsive Design",
-  "SEO",
-  "Terminal",
+  "AWS",
+  "Docker",
+  "SQL",
+  "NoSQL",
+  "Python",
+  "React Native",
 ];
 
 const About = () => {
