@@ -8,8 +8,11 @@ RUN npm install -g npm@latest
 COPY package*.json ./
 RUN npm install
 
-# Build the application
+# Copy only necessary files, excluding cdk
 COPY . .
+RUN rm -rf cdk
+
+# Build the application
 RUN npm run build
 
 # Production image
