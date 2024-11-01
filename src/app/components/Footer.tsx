@@ -59,10 +59,7 @@ const Footer = () => {
             <h2 className="mb-4 text-2xl font-bold text-white">Contact Me</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md">
               <div className="mb-4">
-                <label
-                  htmlFor="name"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
+                <label htmlFor="name" className="mb-2 block text-sm font-medium dark:text-gray-300">
                   Name
                 </label>
                 <input
@@ -81,7 +78,7 @@ const Footer = () => {
               <div className="mb-4">
                 <label
                   htmlFor="email"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+                  className="mb-2 block text-sm font-medium dark:text-gray-300"
                 >
                   Email
                 </label>
@@ -101,7 +98,7 @@ const Footer = () => {
               <div className="mb-4">
                 <label
                   htmlFor="message"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+                  className="mb-2 block text-sm font-medium dark:text-gray-300"
                 >
                   Message
                 </label>
