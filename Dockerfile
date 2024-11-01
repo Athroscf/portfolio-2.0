@@ -12,6 +12,10 @@ RUN npm install
 COPY . .
 RUN rm -rf cdk
 
+# Accept build argument
+ARG RESEND_API_KEY
+ENV RESEND_API_KEY=$RESEND_API_KEY
+
 # Build the application
 RUN npm run build
 
@@ -29,6 +33,9 @@ COPY --from=builder /app/package.json ./package.json
 # Set environment variables
 ENV NODE_ENV=production
 ENV PORT=3000
+
+# Copy the RESEND_API_KEY from the builder stage
+COPY --from=builder /app/.env.local ./.env.local
 
 # Expose port
 EXPOSE 3000
