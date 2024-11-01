@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./theme-provider";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import { ActiveSectionProvider } from "./context-provider";
-import ContactFloating from "./components/ContactFloating";
+import ClientLayout from "./ClientLayout";
 
 export const metadata: Metadata = {
   title: "Christopher Fiallos Porftolio",
@@ -22,18 +20,14 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
+        suppressHydrationWarning
         className={`${roboto.className} min-h-screen bg-gray-100 text-gray-800 dark:bg-gray-800 dark:bg-opacity-90`}
       >
         <ThemeProvider>
           <ActiveSectionProvider>
-            <div className="min-h-screen bg-gray-100 text-gray-800 dark:bg-gray-800 dark:bg-opacity-90">
-              <Header />
-              <ContactFloating />
-              {children}
-              <Footer />
-            </div>
+            <ClientLayout>{children}</ClientLayout>
           </ActiveSectionProvider>
         </ThemeProvider>
       </body>
