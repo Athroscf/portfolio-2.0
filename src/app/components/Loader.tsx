@@ -36,7 +36,7 @@ const Loader: React.FC<ILoader> = ({
   return (
     <div
       key="loader"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-background"
+      className="fixed inset-0 z-50 flex min-h-screen flex-col items-center justify-center bg-background"
       style={{ width: "100vw", height: "100vh" }}
     >
       <div className="flex flex-col items-center gap-6">
