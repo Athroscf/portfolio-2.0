@@ -80,5 +80,6 @@ const config: Config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
+  safelist: ["opacity-0", "opacity-100", "translate-y-0", "translate-y-20", "-translate-y-20"],
 };
 export default config;
