@@ -1,166 +1,136 @@
 import * as cdk from "aws-cdk-lib";
-import * as acm from "aws-cdk-lib/aws-certificatemanager";
+import * as cm from "aws-cdk-lib/aws-certificatemanager";
 import * as cb from "aws-cdk-lib/aws-codebuild";
+import * as cf from "aws-cdk-lib/aws-cloudfront";
+import * as cfo from "aws-cdk-lib/aws-cloudfront-origins";
 import * as cp from "aws-cdk-lib/aws-codepipeline";
 import * as cpa from "aws-cdk-lib/aws-codepipeline-actions";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
-import * as ecs from "aws-cdk-lib/aws-ecs";
-import * as ecr from "aws-cdk-lib/aws-ecr";
-import * as elbv2 from "aws-cdk-lib/aws-elasticloadbalancingv2";
-import * as iam from "aws-cdk-lib/aws-iam";
 import * as route53 from "aws-cdk-lib/aws-route53";
 import * as r53t from "aws-cdk-lib/aws-route53-targets";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import * as sm from "aws-cdk-lib/aws-secretsmanager";
 import { Construct } from "constructs";
 
+interface IPortfolioStack extends cdk.StackProps {
+  environment: "dev" | "prod";
+}
+
 export class PorfolioStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: IPortfolioStack) {
     super(scope, id, props);
 
     const domainName = "christopher-fiallos.com";
     const githubOwner = "Athroscf";
     const githubRepo = "portfolio-2.0";
+    // Fetch secrets
+    const githubSecret = sm.Secret.fromSecretNameV2(this, "GithubSecret", "github-oauth-token-3");
+    const resendApiSecret = sm.Secret.fromSecretNameV2(
+      this,
+      "ResendApiKeySecret",
+      "resend-api-key",
+    );
 
-    // VPC
-    const vpc = new ec2.Vpc(this, "PortfolioVpc", {
-      maxAzs: 2,
-      natGateways: 1,
-    });
+    const environmentPrefix = props.environment === "dev" ? "dev" : "";
+    const fullDomain = `${environmentPrefix}${domainName}`;
 
-    // ECS Cluster
-    const cluster = new ecs.Cluster(this, "PortfolioCluster", { vpc });
-
-    // ECR Repository
-    const repository = new ecr.Repository(this, "PortfolioRepository", {
-      repositoryName: "portfolio-repo",
+    // S3 bucket to store the static website
+    const siteBucket = new s3.Bucket(this, "PortfolioBucket", {
+      bucketName: `${fullDomain}-website`,
+      websiteIndexDocument: "index.html",
+      websiteErrorDocument: "404.html",
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
     });
 
-    // Task definition
-    const taskDefinition = new ecs.FargateTaskDefinition(this, "PortfolioTaskDef", {
-      memoryLimitMiB: 512,
-      cpu: 256,
-    });
-
-    const container = taskDefinition.addContainer("PortfolioContainer", {
-      image: ecs.ContainerImage.fromEcrRepository(repository),
-      portMappings: [{ containerPort: 3000 }],
-      logging: ecs.LogDrivers.awsLogs({ streamPrefix: "portfolio" }),
-    });
-
-    // Load Balancer
-    const lb = new elbv2.ApplicationLoadBalancer(this, "PortfolioLB", {
-      vpc,
-      internetFacing: true,
-    });
-
-    const listener = lb.addListener("PortfolioListener", { port: 80 });
-
-    // Route53 and ACM
-    const zone = route53.HostedZone.fromLookup(this, "Zone", {
+    // Hosted Zone
+    const zone = route53.HostedZone.fromLookup(this, "PortfolioHostedZone", {
       domainName,
       privateZone: false,
     });
 
-    const certificate = new acm.Certificate(this, "PortfolioCert", {
-      domainName,
-      validation: acm.CertificateValidation.fromDns(zone),
+    // ACM certificate
+    const certificate = new cm.Certificate(this, "PortfolioCertificate", {
+      domainName: fullDomain,
+      validation: cm.CertificateValidation.fromDns(zone),
     });
 
-    const httpsListener = lb.addListener("HttpListener", {
-      port: 443,
-      certificates: [certificate],
+    // CloudFront distribution
+    const distribution = new cf.Distribution(this, "PortfolioDistribution", {
+      defaultBehavior: {
+        origin: new cfo.S3StaticWebsiteOrigin(siteBucket),
+        viewerProtocolPolicy: cf.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        functionAssociations: [
+          {
+            function: new cf.Function(this, "UrlRewriteFunction", {
+              code: cf.FunctionCode.fromInline(`
+                function handler(event) {
+                  var request = event.request;
+                  var uri = request.uri;
+
+                  if (uri.endsWith('/')) {
+                    request.uri += 'index.html';
+                  } else if (!uri.includes('.')) {
+                    request.uri += '.html';
+                  }
+
+                  return request;
+                }
+              `),
+            }),
+            eventType: cf.FunctionEventType.VIEWER_REQUEST,
+          },
+        ],
+      },
+      errorResponses: [
+        {
+          httpStatus: 403,
+          responseHttpStatus: 200,
+          responsePagePath: "/index.html",
+        },
+        {
+          httpStatus: 404,
+          responseHttpStatus: 200,
+          responsePagePath: "/error.html",
+        },
+      ],
+      domainNames: [fullDomain],
+      certificate,
     });
 
-    // Github secret
-    const githubSecret = sm.Secret.fromSecretNameV2(this, "GithubSecret", "github-oauth-token-3");
-
-    // Resend secret
-    const resendSecret = sm.Secret.fromSecretNameV2(this, "ResendApiKeySecret", "resend-api-key");
+    // Route53 alias record for the CloudFront distribution
+    new route53.ARecord(this, "PortfolioAliasRecord", {
+      recordName: fullDomain,
+      target: route53.RecordTarget.fromAlias(new r53t.CloudFrontTarget(distribution)),
+      zone,
+    });
 
     // CodeBuild project
     const buildProject = new cb.PipelineProject(this, "PortfolioBuildProject", {
-      environment: {
-        buildImage: cb.LinuxBuildImage.STANDARD_7_0,
-        privileged: true,
-      },
-      environmentVariables: {
-        REPOSITORY_URI: { value: repository.repositoryUri },
-        AWS_DEFAULT_REGION: { value: this.region },
-        AWS_ACCOUNT_ID: { value: this.account },
-        RESEND_API_KEY: {
-          type: cb.BuildEnvironmentVariableType.SECRETS_MANAGER,
-          value: resendSecret.secretArn,
-        },
-      },
       buildSpec: cb.BuildSpec.fromObject({
         version: "0.2",
         phases: {
           install: {
-            "runtime-versions": {
-              nodejs: "18",
-            },
-            commands: [
-              "apt-get update",
-              "apt-get install -y jq",
-              "npm install -g npm@latest",
-              "n stable",
-              "hash -r",
-              "npm install -g yarn",
-            ],
-          },
-          pre_build: {
-            commands: [
-              // Login to Amazon ECR
-              "echo Login in to Amazon ECR...",
-              "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com",
-              //Pull base image before building to avoid rate limits
-              "docker pull node:18-alpine",
-            ],
+            commands: ["npm ci"],
           },
           build: {
-            commands: [
-              "echo Build started on `date`",
-              "echo Building the Docker image...",
-              "docker build --build-arg RESEND_API_KEY=$RESEND_API_KEY -t $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .",
-              "docker tag $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION $REPOSITORY_URI:latest",
-            ],
-          },
-          post_build: {
-            commands: [
-              "echo Build completed on `date`",
-              "echo Pushing Docker image...",
-              "docker push $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION",
-              "docker push $REPOSITORY_URI:latest",
-              "echo Writing image definitions file...",
-              'printf \'[{"name":"PortfolioContainer","imageUri":"%s"}]\' $REPOSITORY_URI:latest > imagedefinitions.json',
-            ],
+            commands: ["npm run build", "npm run export"],
           },
         },
         artifacts: {
-          files: ["imagedefinitions.json"],
+          "base-directory": "out",
+          files: ["**/*"],
         },
       }),
+      environment: {
+        buildImage: cb.LinuxBuildImage.STANDARD_5_0,
+      },
     });
 
+    // Add permissions to CodeBuild project to read secrets
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    repository.grantPullPush(buildProject.role!);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    repository.grantRead(buildProject.role!);
-
-    // Permissions
-    buildProject.addToRolePolicy(
-      new iam.PolicyStatement({
-        actions: [
-          "ecs:DescribeCluster",
-          "ecr:GetAuthorizationToken",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:BatchGetImage",
-          "ecr:GetDownloadForLayer",
-        ],
-        resources: ["*"],
-      }),
-    );
+    resendApiSecret.grantRead(buildProject.role!);
 
     // CodePipeline
     const pipeline = new cp.Pipeline(this, "PortfolioPipeline", {
@@ -175,8 +145,7 @@ export class PorfolioStack extends cdk.Stack {
       repo: githubRepo,
       oauthToken: githubSecret.secretValue,
       output: sourceOutput,
-      branch: "master",
-      trigger: cpa.GitHubTrigger.WEBHOOK,
+      branch: props.environment === "dev" ? "dev" : "master",
     });
 
     pipeline.addStage({
@@ -198,63 +167,66 @@ export class PorfolioStack extends cdk.Stack {
       actions: [buildAction],
     });
 
-    // Fargate Service
-    const fargateService = new ecs.FargateService(this, "PortfolioService", {
-      cluster,
-      taskDefinition,
-      desiredCount: 1,
-      assignPublicIp: true,
-      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
+    // Deploy Stage
+    const deployAction = new cpa.S3DeployAction({
+      actionName: "Deploy",
+      bucket: siteBucket,
+      input: buildOutput,
     });
 
-    listener.addTargets("PortfolioTarget", {
-      port: 3000,
-      protocol: elbv2.ApplicationProtocol.HTTP,
-      targets: [fargateService],
-      healthCheck: {
-        path: "/",
-        healthyHttpCodes: "200",
+    // Create a custom action to invalidate CloudFront cache
+    const invalidateCacheProject = new cb.PipelineProject(this, "InvalidateCacheProject", {
+      buildSpec: cb.BuildSpec.fromObject({
+        version: "0.2",
+        phases: {
+          build: {
+            commands: [
+              `aws cloudfront create-invalidation --distribution-id ${distribution.distributionId} --paths "/*"`,
+            ],
+          },
+        },
+      }),
+      environment: {
+        buildImage: cb.LinuxBuildImage.STANDARD_5_0,
       },
     });
 
-    httpsListener.addTargets("HttpsTarget", {
-      port: 3000,
-      protocol: elbv2.ApplicationProtocol.HTTP,
-      targets: [fargateService],
-    });
+    // Grant permissions to invalidate CloudFront distribution
+    distribution.grantCreateInvalidation(invalidateCacheProject.grantPrincipal);
 
-    // Deploy Stage
-    const deployAction = new cpa.EcsDeployAction({
-      actionName: "Deploy",
-      service: fargateService,
+    const invalidateCacheAction = new cpa.CodeBuildAction({
+      actionName: "InvalidateCache",
+      project: invalidateCacheProject,
       input: buildOutput,
+      runOrder: 2,
     });
 
     pipeline.addStage({
       stageName: "Deploy",
-      actions: [deployAction],
+      actions: [deployAction, invalidateCacheAction],
     });
 
-    // Route53 Alias Record
-    new route53.ARecord(this, "PortfolioAliasRecord", {
-      zone,
-      target: route53.RecordTarget.fromAlias(new r53t.LoadBalancerTarget(lb)),
-      recordName: domainName,
-    });
+    // If prod env, add manual approval step
+    if (props.environment === "prod") {
+      const approvalAction = new cpa.ManualApprovalAction({
+        actionName: "Approve",
+        runOrder: 1,
+      });
 
-    // Grant permissions to ECS
-    const ecsTaskRole = new iam.Role(this, "EcsTaskRole", {
-      assumedBy: new iam.ServicePrincipal("ecs-tasks.amazonaws.com"),
-    });
-
-    ecsTaskRole.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AmazonECSTaskExecutionRolePolicy"),
-    );
-
-    repository.grantPull(ecsTaskRole);
+      pipeline.addStage({
+        stageName: "Approve",
+        actions: [approvalAction],
+        placement: {
+          justAfter: pipeline.stages[1],
+        },
+      });
+    }
 
     // Output
-    new cdk.CfnOutput(this, "LoadBalancerDNS", { value: lb.loadBalancerDnsName });
+    new cdk.CfnOutput(this, "DistributionDomainName", {
+      value: distribution.distributionDomainName,
+      description: "CloudFront Distribution Domain Name",
+    });
   }
 }
 
