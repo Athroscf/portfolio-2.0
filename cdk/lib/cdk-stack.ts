@@ -30,7 +30,7 @@ export class PorfolioStack extends cdk.Stack {
       "resend-api-key",
     );
 
-    const environmentPrefix = props.environment === "dev" ? "dev" : "";
+    const environmentPrefix = props.environment === "dev" ? "dev." : "";
     const fullDomain = `${environmentPrefix}${domainName}`;
 
     // S3 bucket to store the static website
@@ -112,15 +112,19 @@ export class PorfolioStack extends cdk.Stack {
         version: "0.2",
         phases: {
           install: {
-            commands: ["npm ci"],
+            "runtime-versions": { nodejs: 18 },
+            commands: ["npm cache clean --force", "npm install -g npm@latest"],
           },
           build: {
-            commands: ["npm run build", "npm run export"],
+            commands: ["npm install", "npm run build", "npm run export"],
           },
         },
         artifacts: {
           "base-directory": "out",
           files: ["**/*"],
+        },
+        cache: {
+          paths: ["/node_modules/**/*"],
         },
       }),
       environment: {
