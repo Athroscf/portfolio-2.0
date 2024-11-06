@@ -1,6 +1,6 @@
 "use client";
 
-import { experiences, projects } from "@/lib/content";
+import { experiences, projects } from "../../public/imgs/content";
 import About from "./components/About";
 import Intro from "./components/Intro";
 import EP from "./components/EP";

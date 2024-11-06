@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     siteName: "Christopher Fiallos Portfolio",
     images: [
       {
-        url: "/profile.png",
+        url: "/imgs/profile.png",
         width: 1200,
         height: 630,
       },
