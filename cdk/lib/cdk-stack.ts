@@ -125,7 +125,7 @@ export class PorfolioStack extends cdk.Stack {
           pre_build: {
             commands: [
               "echo Loggin in to Amazon ECR...",
-              "aws ecr get-login-password --region $AWS_DEFAULT_REGION",
+              "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY",
               "pnpm install",
             ],
           },
@@ -133,8 +133,8 @@ export class PorfolioStack extends cdk.Stack {
             commands: [
               "echo Build started on `date`",
               "echo Building the Docker image...",
-              `docker build -t ${buildRepository.repositoryUri}:latest -f Dockerfile.build .`,
-              `docker push ${buildRepository.repositoryUri}:latest`,
+              "docker build --build-arg RESEND_API_KEY=$RESEND_API_KEY -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .",
+              "docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG",
               "echo Running Next.js build...",
               "pnpm run build",
               "pnpm run export",
@@ -152,6 +152,24 @@ export class PorfolioStack extends cdk.Stack {
       environment: {
         buildImage: cb.LinuxBuildImage.STANDARD_5_0,
         privileged: true,
+        environmentVariables: {
+          ECR_REGISTRY: {
+            value: `${this.account}.dkr.ecr.${this.region}.amazonaws.com`,
+            type: cb.BuildEnvironmentVariableType.PLAINTEXT,
+          },
+          ECR_REPOSITORY: {
+            value: buildRepository.repositoryName,
+            type: cb.BuildEnvironmentVariableType.PLAINTEXT,
+          },
+          IMAGE_TAG: {
+            value: "latest",
+            type: cb.BuildEnvironmentVariableType.PLAINTEXT,
+          },
+          RESEND_API_KEY: {
+            type: cb.BuildEnvironmentVariableType.SECRETS_MANAGER,
+            value: resendApiSecret.secretArn,
+          },
+        },
       },
     });
 
@@ -160,6 +178,27 @@ export class PorfolioStack extends cdk.Stack {
     buildRepository.grantPullPush(buildProject.role!);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     resendApiSecret.grantRead(buildProject.role!);
+
+    // Grant ECR permissions
+    buildProject.addToRolePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        actions: [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetRepositoryPolicy",
+          "ecr:DescribeRepositories",
+          "ecr:ListImages",
+          "ecr:DescribeImages",
+          "ecr:BatchGetImage",
+          "ecr:InitiateLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:CompleteLayerUpload",
+          "ecr:PutImage",
+        ],
+        resources: ["*"],
+      }),
+    );
 
     // CodePipeline
     const pipeline = new cp.Pipeline(this, "PortfolioPipeline", {
