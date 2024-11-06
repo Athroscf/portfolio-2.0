@@ -5,6 +5,7 @@ import * as cf from "aws-cdk-lib/aws-cloudfront";
 import * as cfo from "aws-cdk-lib/aws-cloudfront-origins";
 import * as cp from "aws-cdk-lib/aws-codepipeline";
 import * as cpa from "aws-cdk-lib/aws-codepipeline-actions";
+import * as ecr from "aws-cdk-lib/aws-ecr";
 import * as route53 from "aws-cdk-lib/aws-route53";
 import * as r53t from "aws-cdk-lib/aws-route53-targets";
 import * as s3 from "aws-cdk-lib/aws-s3";
@@ -106,6 +107,12 @@ export class PorfolioStack extends cdk.Stack {
       zone,
     });
 
+    // ECR Repository for build image
+    const buildRepository = new ecr.Repository(this, "PortfolioRepository", {
+      repositoryName: `${id.toLowerCase()}-portfolio-repo`,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
     // CodeBuild project
     const buildProject = new cb.PipelineProject(this, "PortfolioBuildProject", {
       buildSpec: cb.BuildSpec.fromObject({
@@ -115,8 +122,23 @@ export class PorfolioStack extends cdk.Stack {
             "runtime-versions": { nodejs: 18 },
             commands: ["npm cache clean --force", "npm install -g npm@latest"],
           },
+          pre_build: {
+            commands: [
+              "echo Loggin in to Amazon ECR...",
+              "aws ecr get-login-password --region $AWS_DEFAULT_REGION",
+              "pnpm ci",
+            ],
+          },
           build: {
-            commands: ["npm install", "npm run build", "npm run export"],
+            commands: [
+              "echo Build started on `date`",
+              "echo Building the Docker image...",
+              `docker build -t ${buildRepository.repositoryUri}:latest -f Dockerfile.build .`,
+              `docker push ${buildRepository.repositoryUri}:latest`,
+              "echo Running Next.js build...",
+              "pnpm run build",
+              "pnpm run export",
+            ],
           },
         },
         artifacts: {
@@ -129,10 +151,13 @@ export class PorfolioStack extends cdk.Stack {
       }),
       environment: {
         buildImage: cb.LinuxBuildImage.STANDARD_5_0,
+        privileged: true,
       },
     });
 
     // Add permissions to CodeBuild project to read secrets
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    buildRepository.grantPullPush(buildProject.role!);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     resendApiSecret.grantRead(buildProject.role!);
 
