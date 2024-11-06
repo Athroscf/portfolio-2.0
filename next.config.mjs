@@ -5,6 +5,10 @@ const nextConfig = {
     loader: "custom",
     loaderFile: "/imageLoader.js",
   },
+  experimental: {
+    appDir: true,
+    serverActions: false,
+  },
 };
 
 export default nextConfig;
