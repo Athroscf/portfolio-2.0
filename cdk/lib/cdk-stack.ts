@@ -120,7 +120,7 @@ export class PorfolioStack extends cdk.Stack {
         phases: {
           install: {
             "runtime-versions": { nodejs: 18 },
-            commands: ["npm cache clean --force", "npm install -g npm@latest"],
+            commands: ["npm cache clean --force", "npm install -g pnpm@latest"],
           },
           pre_build: {
             commands: [
