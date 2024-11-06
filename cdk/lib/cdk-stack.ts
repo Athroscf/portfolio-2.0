@@ -126,7 +126,7 @@ export class PorfolioStack extends cdk.Stack {
             commands: [
               "echo Loggin in to Amazon ECR...",
               "aws ecr get-login-password --region $AWS_DEFAULT_REGION",
-              "pnpm ci",
+              "pnpm install",
             ],
           },
           build: {
