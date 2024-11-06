@@ -1,5 +1,6 @@
 # Base Image
-FROM node:18-alpine as builder
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE} as builder
 WORKDIR /app
 
 # Install npm

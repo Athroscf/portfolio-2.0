@@ -118,26 +118,14 @@ export class PorfolioStack extends cdk.Stack {
       buildSpec: cb.BuildSpec.fromObject({
         version: "0.2",
         phases: {
-          install: {
-            "runtime-versions": { nodejs: 18 },
-            commands: ["npm cache clean --force", "npm install -g pnpm@latest"],
-          },
-          pre_build: {
-            commands: [
-              "echo Loggin in to Amazon ECR...",
-              "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY",
-              "pnpm install",
-            ],
-          },
           build: {
             commands: [
               "echo Build started on `date`",
               "echo Building the Docker image...",
-              "docker build --build-arg RESEND_API_KEY=$RESEND_API_KEY -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .",
-              "docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG",
-              "echo Running Next.js build...",
-              "pnpm run build",
-              "pnpm run export",
+              "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY",
+              "docker pull node:18-alpine",
+              "docker tag node:18-alpine $ECR_REGISTRY/$BASE_IMAGE_REPOSITORY:18-alpine",
+              "docker push $ECR_REGISTRY/$BASE_IMAGE_REPOSITORY:18-alpine",
             ],
           },
         },
@@ -155,14 +143,6 @@ export class PorfolioStack extends cdk.Stack {
         environmentVariables: {
           ECR_REGISTRY: {
             value: `${this.account}.dkr.ecr.${this.region}.amazonaws.com`,
-            type: cb.BuildEnvironmentVariableType.PLAINTEXT,
-          },
-          ECR_REPOSITORY: {
-            value: buildRepository.repositoryName,
-            type: cb.BuildEnvironmentVariableType.PLAINTEXT,
-          },
-          IMAGE_TAG: {
-            value: "latest",
             type: cb.BuildEnvironmentVariableType.PLAINTEXT,
           },
           RESEND_API_KEY: {
