@@ -4,9 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  experimental: {
-    appDir: true,
-    serverActions: false,
+  env: {
+    FUNCTION_URL: process.env.FUNCTION_URL || "",
   },
 };
 
