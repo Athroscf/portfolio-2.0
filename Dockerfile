@@ -1,5 +1,6 @@
 # Base Image
-FROM node:18-alpine as builder
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE} as builder
 WORKDIR /app
 
 # Install npm
@@ -15,7 +16,7 @@ RUN rm -rf cdk
 
 # Accept build argument
 ARG RESEND_API_KEY
-ENV NEXT_PUBLIC_RESEND_API_KEY=$RESEND_API_KEY
+ENV RESEND_API_KEY=$RESEND_API_KEY
 
 # Build the application
 RUN npm run build
@@ -35,9 +36,9 @@ COPY --from=builder /app/package.json ./package.json
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Pass the build argument to the runtume environment
+# Pass the build argument to the runtime environment
 ARG RESEND_API_KEY
-ENV NEXT_PUBLIC_RESEND_API_KEY=$RESEND_API_KEY
+ENV RESEND_API_KEY=$RESEND_API_KEY
 
 # Expose port
 EXPOSE 3000

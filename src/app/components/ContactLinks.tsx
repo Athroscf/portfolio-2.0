@@ -8,6 +8,7 @@ const ContactLinks = () => {
         href="https://www.linkedin.com/in/christopher-fiallos/"
         className="transition-colors hover:text-purple-600"
         target="_blank"
+        rel="noopener noreferrer"
       >
         <FiLinkedin size={24} />
       </a>
@@ -15,6 +16,7 @@ const ContactLinks = () => {
         href="https://x.com/ChrisFiallos10"
         className="transition-colors hover:text-purple-600"
         target="_blank"
+        rel="noopener noreferrer"
       >
         <FaXTwitter size={24} />
       </a>
@@ -22,6 +24,7 @@ const ContactLinks = () => {
         href="https://github.com/Athroscf"
         className="transition-colors hover:text-purple-600"
         target="_blank"
+        rel="noopener noreferrer"
       >
         <FiGithub size={24} />
       </a>

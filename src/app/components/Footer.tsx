@@ -28,23 +28,23 @@ const Footer = () => {
 
   const onSubmit = async (data: unknown) => {
     setIsSubmitting(true);
-    try {
-      const response = await fetch("/api/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    await fetch(process.env.FUNCTION_URL!, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then(() => {
         setSubmitStatus("success");
         reset();
-      } else {
+      })
+      .catch(() => {
         setSubmitStatus("error");
-      }
-    } catch (error) {
-      setSubmitStatus("error");
-    }
+      });
+
     setIsSubmitting(false);
   };
 
@@ -140,7 +140,7 @@ const Footer = () => {
               <ContactLinks />
             </div>
             <p className="mt-4 text-sm">
-              © {new Date().getFullYear()} DevPortfolio. All rights reserved.
+              © {new Date().getFullYear()} Christopher Fiallos. All rights reserved.
             </p>
           </div>
         </div>
