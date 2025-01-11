@@ -60,42 +60,23 @@ export const experiences: EPSection = {
 export const projects: EPSection = {
   sectionTitle: "projects",
   sectionDescription:
-    "Here you will find some of the personal and clients projects that I created or contributed.",
+    "Here you will find some of the projects that I have developed for different clients.",
   cards: [
     {
-      title: "Elegancia & Comfort Internal App",
+      title: "Best Home Builders",
       description:
-        "Developed a custom internal web application using Next.js, Redux Toolkit, GraphQL, and AWS to streamline company operations, resulting in improved workflow efficiency and user experience.",
-      technologies: ["AWS", "Cognito", "DynamoDB", "GraphQL", "Next.js", "Redux Toolkit"],
-      image: "/imgs/eg.jpg",
+        "Designed and developed the company's portfolio website with SEO optimizations, along with designing company's brand including the logo.",
+      technologies: ["AWS", "Next.js", "Sanity"],
+      image: "/imgs/bhb-logo.png",
+      link: "https://besthomebuilders.net/"
     },
     {
-      title: "CODE Exitos Website",
+      title: "Consel Honduras",
       description:
-        "Designed and developed enhancements for the company's website, focusing on improving user experience.",
-      technologies: ["Vue"],
-      image: "/imgs/cex.webp",
-    },
-    {
-      title: "CODE Exitos Internal App",
-      description:
-        "Developed, refined, and designed features for the company's internal systems, enhancing functionality and user experience.",
-      technologies: ["Vue"],
-      image: "/imgs/cex.webp",
-    },
-    {
-      title: "IBAO",
-      description:
-        "Completed the development and ongoing maintenance of the IBAO website and platform, ensuring optimal performance and user engagement.",
-      technologies: [".Net", "Azure", "Postgres"],
-      image: "/imgs/ibao.png",
-    },
-    {
-      title: "AFLS",
-      description:
-        "Developed features to enhance user experience and introduced new functionalities to address client requirements effectively.",
-      technologies: [".Net", "Azure", "Postgres"],
-      image: "/imgs/afls.png",
+        "Designed and developed the company's portfolio website with SEO optimizations, along with designing company's brand including the logo.",
+      technologies: ["AWS", "Next.js", "Sanity"],
+      image: "/imgs/consel-logo.png",
+      link: "https://conselhonduras.com/"
     },
     {
       title: "Minister Business Hotel Bar's Software",
@@ -103,6 +84,7 @@ export const projects: EPSection = {
         "Contributed to the development of software for the hotel’s bar, improving guest experience and operational efficiency.",
       technologies: ["Ionic Framework/React", "AWS", "Redux Toolkit"],
       image: "/imgs/mbh.png",
+      link: "https://www.ministerbusiness.com/"
     },
     {
       title: "Minister Business Hotel's AI-Powered Room Access Solution (Prototype)",
@@ -110,6 +92,7 @@ export const projects: EPSection = {
         "Developed an innovative AI-powered prototype that enables guests to access their rooms seamlessly using AI.",
       technologies: ["NodeJS", "TensorFlow"],
       image: "/imgs/mbh.png",
+      link: "https://www.ministerbusiness.com/"
     },
     {
       title: "Minister Business Hotel's Website",
@@ -117,6 +100,7 @@ export const projects: EPSection = {
         "Designed and developed the hotel’s website, focusing on user experience and functionality.",
       technologies: ["NextJS", "AWS", "DynamoDB", "Redux Toolkit"],
       image: "/imgs/mbh.png",
+      link: "https://www.ministerbusiness.com/"
     },
     {
       title: "Minister Business Hotel's PBX",
@@ -124,9 +108,65 @@ export const projects: EPSection = {
         "Reengineered and optimized the PBX system for improved performance and reliability.",
       technologies: ["FreePBX"],
       image: "/imgs/mbh.png",
+      link: "https://www.ministerbusiness.com/"
     },
   ],
 };
+
+export const collaborations: EPSection = {
+  sectionTitle: "contributions",
+  sectionDescription: "Here you will find some of the projects that I have contributed for different clients.",
+  cards: [
+    {
+      title: "Stellantis",
+      description:
+        "Contributed in enhancements for the company's website, focusing on improving user experience.",
+      technologies: ["Vue"],
+      image: "/imgs/stellantis-logo.png",
+      link: "https://www.stellantis.com"
+    },
+    {
+      title: "Wendy's App",
+      description:
+        "Contributed in the development of orders and payment enhancements for app focusing on improving user experience and app's performance.",
+      technologies: ["Vue"],
+      image: "/imgs/wendys-logo.png",
+      link: "https://www.wendys.com/"
+    },
+    {
+      title: "CODE Exitos Website",
+      description:
+        "Designed and developed enhancements for the company's website, focusing on improving user experience.",
+      technologies: ["Vue"],
+      image: "/imgs/cex.webp",
+      link: "https://codexitos.com/"
+    },
+    {
+      title: "CODE Exitos Internal App",
+      description:
+        "Developed, refined, and designed features for the company's internal systems, enhancing functionality and user experience.",
+      technologies: ["Vue"],
+      image: "/imgs/cex.webp",
+      link: "https://codexitos.com/"
+    },
+    {
+      title: "IBAO",
+      description:
+        "Completed the development and ongoing maintenance of the IBAO website and platform, ensuring optimal performance and user engagement.",
+      technologies: [".Net", "Azure", "Postgres"],
+      image: "/imgs/ibao.png",
+      link: "https://theibao.com/"
+    },
+    {
+      title: "AFLS",
+      description:
+        "Developed features to enhance user experience and introduced new functionalities to address client requirements effectively.",
+      technologies: [".Net", "Azure", "Postgres"],
+      image: "/imgs/afls.png",
+      link: "https://assessments.centralreach.com/"
+    },
+  ]
+}
 
 export const skills: Skill[] = [
   { name: "JavaScript", level: 90, color: "from-yellow-400 to-yellow-600" },

@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { EPCard } from "../types";
 import "../globals.css";
 import DividerLine from "./DividerLine";
+import Link from "next/link";
 
 interface IEP {
   title: string;
@@ -47,7 +48,7 @@ const EP: React.FC<IEP> = ({ title, description, cards }) => {
                     <Card className="flex h-full w-full flex-col items-center justify-center p-6 dark:bg-slate-900">
                       {project.image ? (
                         <div
-                          className="h-10 w-16 rounded dark:bg-gray-100"
+                          className="h-14 w-36 rounded dark:bg-gray-100"
                           style={{ aspectRatio: "16/9", position: "relative" }}
                         >
                           <Image
@@ -74,6 +75,9 @@ const EP: React.FC<IEP> = ({ title, description, cards }) => {
                     <Card className="flex h-full w-full flex-col justify-between p-6 dark:bg-slate-900">
                       <h3 className="mb-4 text-2xl font-semibold">{project.title}</h3>
                       <p className="flex-grow">{project.description}</p>
+                      <a href={project.link} className="">
+                        {project.link}
+                      </a>
                     </Card>
                   </div>
                 </div>

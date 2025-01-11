@@ -5,6 +5,9 @@ export type EPCard = {
   description: string;
   image?: string;
   technologies: string[];
+  backgroundImage?: string;
+  link?: string;
+  size?: string;
 };
 
 export type EPSection = {

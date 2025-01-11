@@ -14,7 +14,7 @@ const Header = () => {
   const { activeSection, scrollTo } = useActiveSection();
   const { theme } = useTheme();
 
-  const sections = ["home", "about", "roles", "projects"];
+  const sections = ["home", "about", "projects", "contributions", "roles"];
 
   return (
     <header className="sticky top-0 z-50 bg-white bg-opacity-90 text-gray-800 shadow-lg transition-all duration-300 dark:bg-gray-800 dark:bg-opacity-90 dark:text-white">

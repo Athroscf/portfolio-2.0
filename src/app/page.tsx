@@ -1,6 +1,6 @@
 "use client";
 
-import { experiences, projects } from "../../public/imgs/content";
+import { collaborations, experiences, projects } from "../../public/imgs/content";
 import About from "./components/About";
 import Intro from "./components/Intro";
 import EP from "./components/EP";
@@ -12,14 +12,19 @@ export default function Home() {
         <Intro />
         <About />
         <EP
-          title={experiences.sectionTitle}
-          description={experiences.sectionDescription}
-          cards={experiences.cards}
-        />
-        <EP
           title={projects.sectionTitle}
           description={projects.sectionDescription}
           cards={projects.cards}
+        />
+        <EP
+          title={collaborations.sectionTitle}
+          description={collaborations.sectionDescription}
+          cards={collaborations.cards}
+        />
+        <EP
+          title={experiences.sectionTitle}
+          description={experiences.sectionDescription}
+          cards={experiences.cards}
         />
       </main>
     </div>
