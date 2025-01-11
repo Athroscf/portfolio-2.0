@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { EPCard } from "../types";
 import "../globals.css";
 import DividerLine from "./DividerLine";
-import Link from "next/link";
 
 interface IEP {
   title: string;
